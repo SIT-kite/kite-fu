@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kite_fu/global/session_pool.dart';
+import 'package:kite_fu/global/storage_pool.dart';
 import 'package:kite_fu/util/flash.dart';
 import 'package:kite_fu/util/logger.dart';
 import 'package:kite_fu/util/url_launcher.dart';
@@ -51,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
       Log.info(user);
 
       showBasicFlash(context, const Text('登录成功'));
+      StoragePool.account.account = user;
       // 跳转页面并移除所有其他页面
       Navigator.of(context).pushNamedAndRemoveUntil(
         '/fu',
