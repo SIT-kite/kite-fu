@@ -4,11 +4,11 @@ import 'package:intl/intl.dart';
 class Log {
   static final dateFormat = DateFormat('yyyy-MM-dd hh:mm:ss');
   static String _getCaller(int deep) {
-    return StackTrace.current.toString().split('\n')[deep].substring(2).split(' (')[0].trim();
+    return StackTrace.current.toString().split('\n')[deep].trim().replaceAll('    ', ' ');
   }
 
   static void _log(String type, dynamic message) {
-    print('${getCurrentTime()}  INFO  ${_getCaller(3)}  $message');
+    print('${getCurrentTime()}  INFO  ${_getCaller(4)}  $message');
   }
 
   static String getCurrentTime() {
