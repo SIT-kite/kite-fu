@@ -4,7 +4,7 @@ import 'package:kite_fu/dao/fu.dart';
 import 'package:kite_fu/entity/fu.dart';
 import 'package:kite_fu/session/abstract_session.dart';
 
-import '../abstract_service.dart';
+import 'abstract_service.dart';
 
 class FuService extends AService implements FuDao {
   FuService(ASession session) : super(session);
