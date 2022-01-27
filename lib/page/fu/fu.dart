@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:kite_fu/entity/fu.dart';
 import 'package:kite_fu/global/mock_pool.dart';
+import 'package:kite_fu/global/storage_pool.dart';
 import 'package:kite_fu/page/fu/award.dart';
 import 'package:kite_fu/page/fu/fu_record_list.dart';
 import 'package:kite_fu/page/fu/scan.dart';
@@ -57,12 +58,16 @@ class FuPage extends StatefulWidget {
 }
 
 class _FuPageState extends State<FuPage> {
+  final currentUser = StoragePool.account.account;
   List<MyCard> myCards = [];
   Widget buildBody() {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Text('当前已登录用户: ${currentUser!.account}'),
+          Text('您是第 ${currentUser!.uid} 个注册小风筝的用户'),
+          const SizedBox(height: 30),
           SizedBox(
             height: 200,
             width: 200,
@@ -197,6 +202,7 @@ class _FuPageState extends State<FuPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('上应大扫校徽领奖品活动'),
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: () async {
