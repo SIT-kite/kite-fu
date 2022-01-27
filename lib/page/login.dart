@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kite_fu/global/session_pool.dart';
 import 'package:kite_fu/util/flash.dart';
+import 'package:kite_fu/util/logger.dart';
 import 'package:kite_fu/util/url_launcher.dart';
 import 'package:kite_fu/util/validation.dart';
 
@@ -25,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   bool isPasswordClear = false;
   bool isLicenseAccepted = false;
   bool isProxySettingShown = false;
+  bool disableLoginButton = false;
 
   /// 用户点击登录按钮后
   Future<void> onLogin() async {
@@ -37,12 +39,30 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    await SessionPool.kiteSession.login(
-      _usernameController.text,
-      _passwordController.text,
-    );
+    setState(() {
+      disableLoginButton = true;
+    });
+    try {
+      final user = await SessionPool.kiteSession.login(
+        _usernameController.text,
+        _passwordController.text,
+      );
 
-    Navigator.pushNamed(context, '/fu');
+      Log.info(user);
+
+      showBasicFlash(context, const Text('登录成功'));
+      // 跳转页面并移除所有其他页面
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        '/fu',
+        (Route<dynamic> route) => false,
+      );
+    } catch (e) {
+      Log.info('$e');
+      showBasicFlash(context, Text('登录异常: $e'));
+      setState(() {
+        disableLoginButton = false;
+      });
+    }
   }
 
   @override
@@ -124,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
         SizedBox(
           height: 40,
           child: ElevatedButton(
-            onPressed: onLogin,
+            onPressed: disableLoginButton ? null : onLogin,
             child: const Text('进入活动页面'),
           ),
         ),
