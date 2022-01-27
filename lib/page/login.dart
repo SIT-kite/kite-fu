@@ -1,8 +1,5 @@
-import 'package:flash/flash.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:kite_fu/global/session_pool.dart';
-import 'package:kite_fu/global/storage_pool.dart';
 import 'package:kite_fu/util/flash.dart';
 import 'package:kite_fu/util/url_launcher.dart';
 import 'package:kite_fu/util/validation.dart';
@@ -18,7 +15,6 @@ class _LoginPageState extends State<LoginPage> {
   // Text field controllers.
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _proxyInputController = TextEditingController();
 
   final GlobalKey _formKey = GlobalKey<FormState>();
 
@@ -40,33 +36,12 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    final auth = AuthItem()
-      ..username = _usernameController.text
-      ..password = _passwordController.text;
-    try {
-      await SessionPool.ssoSession.login(auth.username, auth.password);
-    } on CredentialsInvalidException catch (e) {
-      showBasicFlash(context, Text(e.msg));
-      return;
-    } catch (e) {
-      showBasicFlash(context, Text('未知错误: ' + e.toString()));
-      return;
-    }
-
-    StoragePool.authPool.add(auth);
-    StoragePool.authSetting.currentUsername = auth.username;
     Navigator.pushReplacementNamed(context, '/home');
   }
 
   @override
   void initState() {
     super.initState();
-
-    String? username = StoragePool.authSetting.currentUsername;
-    if (username != null) {
-      _usernameController.text = username;
-      _passwordController.text = StoragePool.authPool.get(username)!.password;
-    }
   }
 
   static void onOpenUserLicense() {}
@@ -161,55 +136,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildProxySetButton(BuildContext context, FlashController<dynamic> controller, _) {
-    return IconButton(
-      onPressed: () {
-        final String inputText = _proxyInputController.text;
-
-        if (proxyValidator(inputText) != null) {
-          return;
-        }
-        controller.dismiss();
-        isProxySettingShown = false;
-
-        StoragePool.network.useProxy = true;
-        StoragePool.network.proxy = inputText;
-        SessionPool.init();
-      },
-      icon: const Icon(Icons.send),
-    );
-  }
-
-  void _showProxyInput() {
-    if (isProxySettingShown) {
-      return;
-    }
-    isProxySettingShown = true;
-    _proxyInputController.text = StoragePool.network.proxy;
-
-    context.showFlashBar(
-      persistent: true,
-      borderWidth: 3,
-      behavior: FlashBehavior.fixed,
-      forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
-      title: const Text('设置代理服务'),
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('格式如 192.168.1.1:8000'),
-          Form(
-            child: TextFormField(
-              controller: _proxyInputController,
-              validator: proxyValidator,
-              autofocus: true,
-            ),
-          ),
-        ],
-      ),
-      primaryActionBuilder: _buildProxySetButton,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     var screenWidth = MediaQuery.of(context).size.width;
@@ -217,15 +143,6 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Stack(
         children: [
-          // Proxy setting
-          Positioned(
-            top: 40,
-            right: 10,
-            child: IconButton(
-              icon: const Icon(Icons.settings, size: 35),
-              onPressed: () => _showProxyInput(),
-            ),
-          ),
           Center(
             child:
                 // Create new container and make it center in vertical direction.
