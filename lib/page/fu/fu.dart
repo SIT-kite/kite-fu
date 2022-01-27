@@ -6,6 +6,7 @@ import 'package:kite_fu/global/mock_pool.dart';
 import 'package:kite_fu/page/fu/award.dart';
 import 'package:kite_fu/page/fu/fu_record_list.dart';
 import 'package:kite_fu/page/fu/scan.dart';
+import 'package:kite_fu/util/logger.dart';
 
 import 'util.dart';
 
@@ -141,11 +142,73 @@ class _FuPageState extends State<FuPage> {
         });
   }
 
+  Future<bool> showLogoutDialog(BuildContext context) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('确认退出登录'),
+          // 标题外间距
+          titlePadding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+          // 标题样式 TextStyle
+          titleTextStyle: const TextStyle(
+            color: Colors.blue,
+            fontSize: 25,
+          ),
+          // 内容外间距
+          contentPadding: const EdgeInsets.only(left: 15, right: 15),
+          // 内容样式 TextStyle
+          contentTextStyle: const TextStyle(
+            color: Colors.grey,
+            fontSize: 16,
+          ),
+          content: SizedBox(
+            height: 100,
+            child: Column(
+              children: const [
+                Padding(padding: EdgeInsets.all(15)),
+                Text("将退出当前账户，是否退出？"),
+              ],
+            ),
+          ),
+          // 背景色
+          backgroundColor: Colors.white,
+          // 事件子控件间距
+          actionsPadding: const EdgeInsets.all(15),
+
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('退出登录'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('我点错了'),
+            ),
+          ],
+        );
+      },
+    );
+    return result ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('上应大扫校徽领奖品活动'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              final result = await showLogoutDialog(context);
+              Log.info('对话框结果 $result');
+              if (result) {
+                Navigator.pushReplacementNamed(context, '/login');
+              }
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: Container(
         padding: const EdgeInsets.all(10),
