@@ -1,4 +1,4 @@
-import 'package:kite_fu/entity/kite/fu.dart';
+import 'package:kite_fu/entity/fu.dart';
 
 String cardTypeToString(FuType type) {
   return {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kite_fu/entity/kite/fu.dart';
+import 'package:kite_fu/entity/fu.dart';
 
 import 'util.dart';
 

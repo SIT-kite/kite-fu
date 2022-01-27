@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:kite_fu/entity/kite/fu.dart';
+import 'package:kite_fu/entity/fu.dart';
 
 abstract class FuDao {
   /// 上传照片

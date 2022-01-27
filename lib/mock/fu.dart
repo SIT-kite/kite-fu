@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:kite_fu/dao/fu.dart';
-import 'package:kite_fu/entity/kite/fu.dart';
+import 'package:kite_fu/entity/fu.dart';
 import 'package:kite_fu/util/logger.dart';
 
 class FuMock implements FuDao {

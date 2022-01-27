@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:kite_fu/entity/kite/fu.dart';
+import 'package:kite_fu/entity/fu.dart';
 import 'package:kite_fu/global/mock_pool.dart';
 import 'package:kite_fu/page/fu/award.dart';
 import 'package:kite_fu/page/fu/fu_record_list.dart';
