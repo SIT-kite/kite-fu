@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:kite_fu/global/session_pool.dart';
+import 'package:kite_fu/page/fu/fu.dart';
 import 'package:kite_fu/util/flash.dart';
 import 'package:kite_fu/util/url_launcher.dart';
 import 'package:kite_fu/util/validation.dart';
@@ -36,7 +38,17 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    Navigator.pushReplacementNamed(context, '/home');
+    await SessionPool.kiteSession.login(
+      _usernameController.text,
+      _passwordController.text,
+    );
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return const FuPage();
+      }),
+    );
   }
 
   @override
@@ -119,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
           height: 40,
           child: ElevatedButton(
             onPressed: onLogin,
-            child: const Text('进入风筝元宇宙'),
+            child: const Text('进入活动页面'),
           ),
         ),
         TextButton(
