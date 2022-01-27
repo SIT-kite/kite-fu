@@ -7,7 +7,7 @@ class Log {
     return StackTrace.current.toString().split('\n')[deep].substring(2).split(' (')[0].trim();
   }
 
-  static void _log(String type, String message) {
+  static void _log(String type, dynamic message) {
     print('${getCurrentTime()}  INFO  ${_getCaller(3)}  $message');
   }
 
