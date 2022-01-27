@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:kite_fu/dao/kite/fu.dart';
+import 'package:kite_fu/dao/fu.dart';
 import 'package:kite_fu/entity/kite/fu.dart';
 import 'package:kite_fu/session/abstract_session.dart';
 
@@ -11,8 +11,9 @@ class FuService extends AService implements FuDao {
 
   @override
   Future<List<MyCard>> getList() async {
-    // TODO: implement getList
-    throw UnimplementedError();
+    final response = await session.get('/badge/card');
+    print(response.data);
+    return [];
   }
 
   @override

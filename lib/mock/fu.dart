@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:kite_fu/dao/kite/fu.dart';
+import 'package:kite_fu/dao/fu.dart';
 import 'package:kite_fu/entity/kite/fu.dart';
 import 'package:kite_fu/util/logger.dart';
 

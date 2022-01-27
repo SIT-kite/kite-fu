@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:kite_fu/dao/kite/jwt.dart';
+import 'package:kite_fu/dao/jwt.dart';
 import 'package:kite_fu/entity/kite/account.dart';
 import 'package:kite_fu/session/abstract_session.dart';
 import 'package:kite_fu/util/logger.dart';
