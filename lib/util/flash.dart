@@ -1,13 +1,13 @@
 import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 
-void showBasicFlash(
+Future<void> showBasicFlash(
   BuildContext context,
   Widget content, {
   Duration? duration,
   flashStyle = FlashBehavior.floating,
-}) {
-  showFlash(
+}) async {
+  await showFlash(
     context: context,
     duration: duration ?? const Duration(seconds: 1),
     builder: (context, controller) {
