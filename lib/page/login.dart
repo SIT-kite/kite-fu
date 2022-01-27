@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kite_fu/global/session_pool.dart';
-import 'package:kite_fu/page/fu/fu.dart';
 import 'package:kite_fu/util/flash.dart';
 import 'package:kite_fu/util/url_launcher.dart';
 import 'package:kite_fu/util/validation.dart';
@@ -43,12 +42,7 @@ class _LoginPageState extends State<LoginPage> {
       _passwordController.text,
     );
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) {
-        return const FuPage();
-      }),
-    );
+    Navigator.pushNamed(context, '/fu');
   }
 
   @override
