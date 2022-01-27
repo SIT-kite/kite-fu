@@ -1,14 +1,22 @@
 import 'package:kite_fu/dao/jwt.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JwtStorage implements JwtDao {
-  String? jwt;
+  static const String namespace = '/jwt';
+  SharedPreferences prefs;
+  JwtStorage(this.prefs);
+
   @override
   set jwtToken(String? foo) {
-    jwt = foo;
+    if (foo == null) {
+      prefs.remove(namespace);
+      return;
+    }
+    prefs.setString(namespace, foo);
   }
 
   @override
   String? get jwtToken {
-    return jwt;
+    return prefs.getString(namespace);
   }
 }

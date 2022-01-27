@@ -8,8 +8,8 @@ export 'package:kite_fu/global/session_pool.dart';
 export 'package:kite_fu/global/storage_pool.dart';
 export 'package:kite_fu/util/logger.dart';
 
-const String username = '1910400740';
-const String password = '1910400740ss';
+const String username = '';
+const String password = '';
 
 /// 测试前调用该函数做初始化
 Future<void> init() async {
