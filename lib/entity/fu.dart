@@ -70,7 +70,8 @@ class UploadResultModel {
   /// 福卡类型
   @JsonKey(fromJson: _intToFuType)
   FuType type = FuType.noCard;
-
+  UploadResultModel();
+  factory UploadResultModel.fromJson(Map<String, dynamic> json) => _$UploadResultModelFromJson(json);
   @override
   String toString() {
     return 'UploadResultModel{result: $result, type: $type}';
@@ -83,7 +84,8 @@ class MyCard {
   @JsonKey(fromJson: _intToFuType)
   FuType type = FuType.noCard;
   DateTime ts = DateTime.now();
-
+  MyCard();
+  factory MyCard.fromJson(Map<String, dynamic> json) => _$MyCardFromJson(json);
   @override
   String toString() {
     return 'MyCard{type: $type, ts: $ts}';
@@ -95,7 +97,8 @@ class MyCard {
 class PraiseResult {
   bool hasResult = false;
   String url = '';
-
+  PraiseResult();
+  factory PraiseResult.fromJson(Map<String, dynamic> json) => _$PraiseResultFromJson(json);
   @override
   String toString() {
     return 'PraiseResult{hasResult: $hasResult, url: $url}';
