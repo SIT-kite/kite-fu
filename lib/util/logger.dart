@@ -8,7 +8,7 @@ class Log {
   }
 
   static void _log(String type, dynamic message) {
-    print('${getCurrentTime()}  INFO  ${_getCaller(4)}  $message');
+    print('${getCurrentTime()}  INFO  $message');
   }
 
   static String getCurrentTime() {
