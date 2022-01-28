@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kite_fu/entity/fu.dart';
-import 'package:kite_fu/global/mock_pool.dart';
+import 'package:kite_fu/global/service_pool.dart';
 
 class AwardPage extends StatelessWidget {
   const AwardPage({Key? key}) : super(key: key);
@@ -9,10 +9,10 @@ class AwardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('开奖结果'),
+        title: const Text('开奖结果'),
       ),
       body: FutureBuilder<PraiseResult>(
-        future: MockPool.fu.getResult(),
+        future: ServicePool.fu.getResult(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
