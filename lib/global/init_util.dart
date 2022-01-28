@@ -1,5 +1,6 @@
 import 'package:kite_fu/util/logger.dart';
 
+import 'service_pool.dart';
 import 'session_pool.dart';
 import 'storage_pool.dart';
 
@@ -11,6 +12,6 @@ Future<void> initBeforeRun() async {
   // 所以必须先初始化存储层，在初始化网络层
   await StoragePool.init();
   await SessionPool.init();
-  // ServicePool.init();
+  ServicePool.init();
   Log.info('应用开启前初始化完成');
 }
