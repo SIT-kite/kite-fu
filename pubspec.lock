@@ -247,6 +247,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.0"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.13.4"
   http_multi_server:
     dependency: transitive
     description:
@@ -380,6 +387,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.2"
+  pointer_interceptor:
+    dependency: transitive
+    description:
+      name: pointer_interceptor
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.9.0+1"
   pool:
     dependency: transitive
     description:
@@ -616,6 +630,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.2"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.5"
   vector_math:
     dependency: transitive
     description:
@@ -637,6 +658,41 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.0"
+  webview_flutter:
+    dependency: transitive
+    description:
+      name: webview_flutter
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.8.0"
+  webview_flutter_android:
+    dependency: transitive
+    description:
+      name: webview_flutter_android
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.8.2"
+  webview_flutter_platform_interface:
+    dependency: transitive
+    description:
+      name: webview_flutter_platform_interface
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.8.1"
+  webview_flutter_wkwebview:
+    dependency: transitive
+    description:
+      name: webview_flutter_wkwebview
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.7.1"
+  webviewx:
+    dependency: "direct main"
+    description:
+      name: webviewx
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.1"
   win32:
     dependency: transitive
     description:
