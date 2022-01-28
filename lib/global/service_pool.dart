@@ -4,7 +4,7 @@ import 'package:kite_fu/service/fu.dart';
 
 class ServicePool {
   static late FuDao fu;
-  void init() {
+  static void init() {
     fu = FuService(SessionPool.kiteSession);
   }
 }
