@@ -7,8 +7,6 @@ import 'package:kite_fu/entity/account.dart';
 import 'package:kite_fu/session/abstract_session.dart';
 import 'package:kite_fu/util/logger.dart';
 
-const String _baseUrl = 'https://kite.sunnysab.cn/api/v2';
-
 class KiteSession extends ASession {
   final Dio dio;
   final JwtDao jwtDao;
@@ -28,7 +26,7 @@ class KiteSession extends ASession {
   }) async {
     String? token = jwtDao.jwtToken;
     final response = await dio.request(
-      _baseUrl + url,
+      url,
       data: data,
       queryParameters: queryParameters,
       options: (options ?? Options()).copyWith(
@@ -66,7 +64,7 @@ class KiteSession extends ASession {
   /// 用户登录
   /// 用户不存在时，将自动创建用户
   Future<KiteUser> login(String username, String password) async {
-    final response = await post('/session', data: {
+    final response = await post('https://kite.sunnysab.cn/api/v2/session', data: {
       'account': username,
       'password': password,
     });
