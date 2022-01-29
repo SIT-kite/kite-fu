@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kite_fu/global/service_pool.dart';
+import 'package:kite_fu/util/logger.dart';
 import 'package:webviewx/webviewx.dart';
 
 class ScanPage extends StatefulWidget {
@@ -33,6 +34,18 @@ class _ScanPageState extends State<ScanPage> {
       height: screenSize.height,
       width: screenSize.width,
       onWebViewCreated: (controller) => webviewController = controller,
+      dartCallBacks: {
+        DartCallback(
+            name: 'cameraViewInitialized',
+            callBack: (msg) {
+              Log.info('摄像头已启动');
+            }),
+        DartCallback(
+            name: 'cameraViewInitializedError',
+            callBack: (msg) {
+              Log.info('摄像头启动失败');
+            }),
+      },
     );
   }
 
