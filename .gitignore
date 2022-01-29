@@ -1,0 +1,8 @@
+.idea/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.g.dart
+build/
+.packages
+generated_plugin_registrant.dart
