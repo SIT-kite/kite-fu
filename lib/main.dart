@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kite_fu/global/init_util.dart';
+import 'package:kite_fu/global/storage_pool.dart';
 import 'package:kite_fu/page/fu/fu.dart';
 import 'package:kite_fu/page/login.dart';
 
@@ -12,10 +13,20 @@ void main() async {
   runApp(MaterialApp(
     theme: themeData,
     title: '扫福活动',
-    home: const LoginPage(),
+    home: StoragePool.jwt.jwtToken == null ? const LoginPage() : const FuPage(),
     routes: {
-      '/login': (context) => const LoginPage(),
-      '/fu': (context) => const FuPage(),
+      '/login': (context) {
+        if (StoragePool.jwt.jwtToken != null) {
+          Navigator.pushReplacementNamed(context, '/fu');
+        }
+        return const LoginPage();
+      },
+      '/fu': (context) {
+        if (StoragePool.jwt.jwtToken == null) {
+          Navigator.pushReplacementNamed(context, '/login');
+        }
+        return const FuPage();
+      },
     },
     debugShowCheckedModeBanner: false,
   ));
