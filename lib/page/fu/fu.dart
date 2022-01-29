@@ -1,11 +1,9 @@
 import 'dart:collection';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kite_fu/entity/fu.dart';
 import 'package:kite_fu/global/mock_pool.dart';
 import 'package:kite_fu/global/storage_pool.dart';
-import 'package:kite_fu/page/fu/award.dart';
 import 'package:kite_fu/page/fu/fu_record_list.dart';
 import 'package:kite_fu/page/fu/scan.dart';
 import 'package:kite_fu/util/logger.dart';
@@ -20,17 +18,44 @@ class Fu {
   Fu(this.type, this.name, this.num);
 
   Widget buildFuWidget({GestureTapCallback? onTap}) {
-    return InkWell(
+    final card = InkWell(
       onTap: onTap,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           // const Icon(Icons.book, size: 40),
-          Image.asset('assets/fu/$name.png'),
+          Image.asset(
+            'assets/fu/$name.png',
+            width: 40,
+            height: 40,
+          ),
           // SizedBox(height: 10),
-          Text(name),
-          Text('已有$num张'),
+          Text(
+            name,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(0xFF, 252, 214, 177),
+            ),
+          ),
+          Text(
+            '已有$num张',
+            style: const TextStyle(
+              fontSize: 13,
+              color: Color.fromARGB(0xFF, 252, 214, 177),
+            ),
+          ),
         ],
+      ),
+    );
+
+    return Container(
+      child: card,
+      margin: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: Colors.red.withAlpha(200),
+        borderRadius: BorderRadius.circular(10),
       ),
     );
   }
@@ -62,6 +87,45 @@ class FuPage extends StatefulWidget {
 class _FuPageState extends State<FuPage> {
   final currentUser = StoragePool.account.account;
   List<MyCard> myCards = [];
+  Future<void> gotoScanPage() async {
+    await Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+      return const ScanPage();
+    }));
+    setState(() {});
+  }
+
+  Widget buildScanButton() {
+    Widget view = Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.red.withAlpha(220),
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
+      ),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 200,
+            width: 200,
+            child: Image.asset('assets/badge.png'),
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            '扫校徽，领福卡',
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(0xFF, 252, 214, 177),
+            ),
+          ),
+        ],
+      ),
+    );
+    return InkWell(
+      onTap: gotoScanPage,
+      child: view,
+    );
+  }
+
   Widget buildBody() {
     return Center(
       child: Column(
@@ -69,51 +133,29 @@ class _FuPageState extends State<FuPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('当前已登录用户: ${currentUser!.account}'),
-          Text('您是第 ${currentUser!.uid} 个注册小风筝的用户'),
-          const SizedBox(height: 30),
-          SizedBox(
-            height: 200,
-            width: 200,
-            child: ElevatedButton(
-              onPressed: () async {
-                await Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                  return const ScanPage();
-                }));
-                setState(() {});
-              },
-              child: const Text('扫校徽领福卡'),
-            ),
-          ),
-          const SizedBox(height: 20),
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                      return const AwardPage();
-                    }));
-                  },
-                  child: const Text('查看开奖结果'),
-                ),
+              Text(
+                '当前已登录用户: ${currentUser!.account}',
+                style: TextStyle(color: Color.fromARGB(0xFF, 252, 214, 177)),
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                      return FuRecordListPage(
-                        myCards,
-                        title: '我的所有福卡',
-                      );
-                    }));
-                  },
-                  child: const Text('查看所有福卡'),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  '点击退出账户',
+                  style: TextStyle(
+                    color: Colors.blue,
+                  ),
                 ),
               ),
             ],
           ),
+
+          // Text('您是第 ${currentUser!.uid} 个注册小风筝的用户'),
+          const SizedBox(height: 30),
+          buildScanButton(),
+          // const SizedBox(height: 20),
         ],
       ),
     );
@@ -140,11 +182,14 @@ class _FuPageState extends State<FuPage> {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
               final data = snapshot.data!;
-              myCards = data;
-              return Row(
-                children: Fu.fromCardList(data).map((e) {
-                  return Expanded(child: buildItem(data, e));
-                }).toList(),
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+                child: Row(
+                  children: (Fu.fromCardList(data) + Fu.fromCardList(data)).map((e) {
+                    return buildItem(data, e);
+                  }).toList(),
+                ),
               );
             }
           }
@@ -220,10 +265,27 @@ class _FuPageState extends State<FuPage> {
             },
             icon: const Icon(Icons.logout),
           ),
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                return FuRecordListPage(
+                  myCards,
+                  title: '我的所有福卡',
+                );
+              }));
+            },
+            icon: const Icon(Icons.history),
+          )
         ],
       ),
       body: Container(
         padding: const EdgeInsets.all(10),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/background.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Column(
           children: [
             Expanded(child: buildBody()),
