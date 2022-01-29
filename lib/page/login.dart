@@ -29,6 +29,14 @@ class _LoginPageState extends State<LoginPage> {
   bool isProxySettingShown = false;
   bool disableLoginButton = false;
 
+  void gotoFuMainPage() {
+    // 跳转页面并移除所有其他页面
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      '/fu',
+      (Route<dynamic> route) => false,
+    );
+  }
+
   /// 用户点击登录按钮后
   Future<void> onLogin() async {
     bool formValid = (_formKey.currentState as FormState).validate();
@@ -53,11 +61,7 @@ class _LoginPageState extends State<LoginPage> {
 
       showBasicFlash(context, const Text('登录成功'));
       StoragePool.account.account = user;
-      // 跳转页面并移除所有其他页面
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        '/fu',
-        (Route<dynamic> route) => false,
-      );
+      gotoFuMainPage();
     } catch (e) {
       Log.info('$e');
       showBasicFlash(context, Text('登录异常: $e'));
@@ -65,11 +69,6 @@ class _LoginPageState extends State<LoginPage> {
         disableLoginButton = false;
       });
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   static void onOpenUserLicense() {}
