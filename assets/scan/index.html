@@ -37,8 +37,10 @@ window.onload = resizeVideo;
 async function startCameraDefaultResolution () {
   try{
     await cameraPhoto.startCamera(ENVIRONMENT_MODE);
+    cameraViewInitialized();
   }catch(error){
     console.error('Camera not started!', error);
+    cameraViewInitializedError();
   }
 }
 
