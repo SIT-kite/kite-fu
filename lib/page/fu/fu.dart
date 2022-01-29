@@ -206,7 +206,7 @@ class _FuPageState extends State<FuPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('上应大扫校徽领奖品活动'),
+        title: const Text('扫一扫，福气等你来'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -228,8 +228,6 @@ class _FuPageState extends State<FuPage> {
           children: [
             Expanded(child: buildBody()),
             buildFuRowItems(),
-            // Expanded(child: , flex: 10),
-            // Expanded(child: , flex: 3),
           ],
         ),
       ),
