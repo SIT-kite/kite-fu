@@ -31,3 +31,4 @@ flutter:
 
   assets:
     - assets/scan/index.html
+    - assets/fu/

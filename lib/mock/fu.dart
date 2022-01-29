@@ -43,13 +43,7 @@ class FuMock implements FuDao {
     Log.info('抽到卡片');
     final card = UploadResultModel()
       ..result = UploadResult.successful
-      ..type = [
-        FuType.loveCountry,
-        FuType.wealthy,
-        FuType.harmony,
-        FuType.friendly,
-        FuType.dedicateToWork
-      ][Random.secure().nextInt(5)];
+      ..type = FuType.values[Random.secure().nextInt(FuType.values.length - 1) + 1];
     // 添加到卡包
     myCards.add(MyCard()
       ..type = card.type

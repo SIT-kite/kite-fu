@@ -24,7 +24,8 @@ class Fu {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.book, size: 40),
+          // const Icon(Icons.book, size: 40),
+          Image.asset('assets/fu/$name.jpg'),
           // SizedBox(height: 10),
           Text(name),
           Text('已有$num张'),
@@ -36,11 +37,11 @@ class Fu {
   /// 统计卡牌列表
   static List<Fu> fromCardList(List<MyCard> cards) {
     LinkedHashMap<FuType, int> retMap = LinkedHashMap();
-    retMap[FuType.loveCountry] = 0;
-    retMap[FuType.wealthy] = 0;
-    retMap[FuType.dedicateToWork] = 0;
-    retMap[FuType.friendly] = 0;
-    retMap[FuType.harmony] = 0;
+    retMap[FuType.sit] = 0;
+    retMap[FuType.innovation] = 0;
+    retMap[FuType.erudition] = 0;
+    retMap[FuType.wealth] = 0;
+    retMap[FuType.health] = 0;
     for (final card in cards) {
       retMap[card.type] = retMap[card.type]! + 1;
     }

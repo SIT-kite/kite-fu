@@ -34,31 +34,24 @@ enum FuType {
   /// 无效卡片
   noCard,
 
-  /// 爱国
-  loveCountry,
+  /// 上应
+  sit,
 
-  /// 富强
-  wealthy,
+  /// 创新
+  innovation,
 
-  /// 和谐
-  harmony,
+  /// 博学
+  erudition,
 
-  /// 友善
-  friendly,
+  /// 富贵
+  wealth,
 
-  /// 敬业
-  dedicateToWork,
+  /// 康宁
+  health,
 }
 
 FuType _intToFuType(int foo) {
-  return [
-    FuType.noCard,
-    FuType.loveCountry,
-    FuType.wealthy,
-    FuType.harmony,
-    FuType.friendly,
-    FuType.dedicateToWork,
-  ][foo];
+  return FuType.values[foo];
 }
 
 @JsonSerializable(createToJson: false)
