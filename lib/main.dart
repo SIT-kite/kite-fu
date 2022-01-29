@@ -8,7 +8,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initBeforeRun();
 
-  const primaryColor = Colors.redAccent;
+  const primaryColor = Colors.red;
   final themeData = ThemeData(primaryColor: primaryColor, primarySwatch: createThemeSwatch(primaryColor));
   runApp(MaterialApp(
     theme: themeData,
