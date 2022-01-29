@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:kite_fu/entity/fu.dart';
-import 'package:kite_fu/global/service_pool.dart';
+import 'package:kite_fu/global/mock_pool.dart';
 import 'package:kite_fu/global/storage_pool.dart';
 import 'package:kite_fu/page/fu/award.dart';
 import 'package:kite_fu/page/fu/fu_record_list.dart';
@@ -130,7 +130,8 @@ class _FuPageState extends State<FuPage> {
     }
 
     return FutureBuilder<List<MyCard>>(
-        future: ServicePool.fu.getList(),
+        // future: ServicePool.fu.getList(),
+        future: MockPool.fu.getList(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
@@ -209,6 +210,7 @@ class _FuPageState extends State<FuPage> {
               final result = await showLogoutDialog(context);
               Log.info('对话框结果 $result');
               if (result) {
+                StoragePool.jwt.jwtToken = null;
                 Navigator.pushReplacementNamed(context, '/login');
               }
             },
