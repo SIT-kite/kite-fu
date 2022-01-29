@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kite_fu/entity/fu.dart';
 import 'package:kite_fu/global/mock_pool.dart';
@@ -25,7 +26,7 @@ class Fu {
         mainAxisSize: MainAxisSize.min,
         children: [
           // const Icon(Icons.book, size: 40),
-          Image.asset('assets/fu/$name.jpg'),
+          Image.asset('assets/fu/$name.png'),
           // SizedBox(height: 10),
           Text(name),
           Text('已有$num张'),
@@ -64,7 +65,9 @@ class _FuPageState extends State<FuPage> {
   Widget buildBody() {
     return Center(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text('当前已登录用户: ${currentUser!.account}'),
           Text('您是第 ${currentUser!.uid} 个注册小风筝的用户'),
@@ -223,8 +226,10 @@ class _FuPageState extends State<FuPage> {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            Expanded(child: buildBody(), flex: 10),
-            Expanded(child: buildFuRowItems(), flex: 3),
+            Expanded(child: buildBody()),
+            buildFuRowItems(),
+            // Expanded(child: , flex: 10),
+            // Expanded(child: , flex: 3),
           ],
         ),
       ),
