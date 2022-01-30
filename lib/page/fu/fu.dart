@@ -138,12 +138,14 @@ class _FuPageState extends State<FuPage> {
             children: [
               Text(
                 '当前已登录用户: ${currentUser!.account}',
-                style: TextStyle(color: Color.fromARGB(0xFF, 252, 214, 177)),
+                style: const TextStyle(color: Color.fromARGB(0xFF, 252, 214, 177)),
               ),
               TextButton(
-                onPressed: () {},
-                child: Text(
-                  '点击退出账户',
+                onPressed: () {
+                  logout(context);
+                },
+                child: const Text(
+                  '退出账户',
                   style: TextStyle(
                     color: Colors.blue,
                   ),
@@ -195,6 +197,15 @@ class _FuPageState extends State<FuPage> {
           }
           return const Center(child: CircularProgressIndicator());
         });
+  }
+
+  Future<void> logout(BuildContext context) async {
+    final result = await showLogoutDialog(context);
+    Log.info('对话框结果 $result');
+    if (result) {
+      StoragePool.jwt.jwtToken = null;
+      Navigator.pushReplacementNamed(context, '/login');
+    }
   }
 
   Future<bool> showLogoutDialog(BuildContext context) async {
@@ -255,13 +266,8 @@ class _FuPageState extends State<FuPage> {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            onPressed: () async {
-              final result = await showLogoutDialog(context);
-              Log.info('对话框结果 $result');
-              if (result) {
-                StoragePool.jwt.jwtToken = null;
-                Navigator.pushReplacementNamed(context, '/login');
-              }
+            onPressed: () {
+              logout(context);
             },
             icon: const Icon(Icons.logout),
           ),
