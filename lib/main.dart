@@ -3,11 +3,11 @@ import 'package:kite_fu/global/init_util.dart';
 import 'package:kite_fu/page/route_table.dart';
 import 'package:oktoast/oktoast.dart';
 
+const primaryColor = Colors.red;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initBeforeRun();
 
-  const primaryColor = Colors.red;
   final themeData = ThemeData(primaryColor: primaryColor, primarySwatch: createThemeSwatch(primaryColor));
   final app = MaterialApp(
     theme: themeData,
