@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kite_fu/global/service_pool.dart';
 import 'package:kite_fu/util/logger.dart';
+import 'package:kite_fu/util/url_launcher.dart';
 import 'package:webviewx/webviewx.dart';
 
 class ScanPage extends StatefulWidget {
@@ -17,6 +18,8 @@ class ScanPage extends StatefulWidget {
 class _ScanPageState extends State<ScanPage> {
   Size get screenSize => MediaQuery.of(context).size;
   WebViewXController? webviewController;
+  bool isCameraInit = false;
+  bool isCameraError = false;
 
   Future<Uint8List?> takePhoto() async {
     if (webviewController == null) {
@@ -29,12 +32,17 @@ class _ScanPageState extends State<ScanPage> {
 
   void onCameraInitialized() {
     Log.info('摄像头正常启动');
+    setState(() {
+      isCameraInit = true;
+    });
     (() async {
       while (true) {
-        await Future.delayed(const Duration(seconds: 3));
-        final imageBuffer = await takePhoto();
-        if (imageBuffer != null && imageBuffer.isNotEmpty) {
-          ServicePool.fu.upload(imageBuffer);
+        if (isCameraInit && !isCameraError) {
+          await Future.delayed(const Duration(seconds: 3));
+          final imageBuffer = await takePhoto();
+          if (imageBuffer != null && imageBuffer.isNotEmpty) {
+            ServicePool.fu.upload(imageBuffer);
+          }
         }
       }
     })();
@@ -42,6 +50,9 @@ class _ScanPageState extends State<ScanPage> {
 
   void onCameraError(msg) {
     Log.info('摄像头发生异常');
+    setState(() {
+      isCameraError = true;
+    });
   }
 
   Widget buildCameraView(String htmlSource) {
@@ -70,27 +81,35 @@ class _ScanPageState extends State<ScanPage> {
 
   @override
   void dispose() {
+    Log.info('相机已销毁');
     webviewController?.dispose();
     webviewController = null;
+    isCameraInit = false;
+    isCameraError = false;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('扫一扫 迎福卡'),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              final image = await takePhoto();
-              await ServicePool.fu.upload(image!);
-            },
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      body: FutureBuilder<String>(
+    Widget buildErrorPage() {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            '当前浏览器环境不支持开启摄像头',
+            '请尝试更换浏览器重试',
+          ].map((e) {
+            return Text(
+              e,
+              style: const TextStyle(fontSize: 25),
+            );
+          }).toList(),
+        ),
+      );
+    }
+
+    Widget buildNormalPage() {
+      return FutureBuilder<String>(
         future: rootBundle.loadString('assets/scan/index.html'),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
@@ -103,7 +122,22 @@ class _ScanPageState extends State<ScanPage> {
             child: CircularProgressIndicator(),
           );
         },
-      ),
-    );
+      );
+    }
+
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('扫一扫 迎福卡'),
+          actions: [
+            TextButton(
+              onPressed: () => launchInBrowser('https://support.qq.com/products/377648'),
+              child: const Text(
+                '反馈',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+        body: isCameraError ? buildErrorPage() : buildNormalPage());
   }
 }
