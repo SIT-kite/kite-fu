@@ -32,7 +32,7 @@ class RouteTable {
     }
     // 路由找不到
     if (!table.containsKey(name)) {
-      return MaterialPageRoute(builder: table[name]!);
+      return MaterialPageRoute(builder: table[notFoundPath]!);
     }
 
     final bool hasAuth = StoragePool.jwt.jwtToken != null;
