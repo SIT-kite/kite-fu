@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
       gotoFuMainPage();
     } catch (e) {
       Log.info('$e');
-      showBasicFlash(context, Text('登录异常: $e'));
+      showBasicFlash(context, Text('登录异常: ${e.toString().split('\n')[0]}'));
       setState(() {
         disableLoginButton = false;
       });
