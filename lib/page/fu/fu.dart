@@ -2,16 +2,17 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:kite_fu/entity/fu.dart';
-import 'package:kite_fu/global/mock_pool.dart';
+import 'package:kite_fu/global/service_pool.dart';
 import 'package:kite_fu/global/storage_pool.dart';
 import 'package:kite_fu/page/fu/fu_record_list.dart';
 import 'package:kite_fu/page/fu/scan.dart';
 import 'package:kite_fu/util/logger.dart';
+import 'package:kite_fu/util/url_launcher.dart';
 
 import 'util.dart';
 
 class Fu {
-  FuType type;
+  FuCard type;
   String name;
   int num;
 
@@ -62,14 +63,14 @@ class Fu {
 
   /// 统计卡牌列表
   static List<Fu> fromCardList(List<MyCard> cards) {
-    LinkedHashMap<FuType, int> retMap = LinkedHashMap();
-    retMap[FuType.sit] = 0;
-    retMap[FuType.innovation] = 0;
-    retMap[FuType.erudition] = 0;
-    retMap[FuType.wealth] = 0;
-    retMap[FuType.health] = 0;
+    LinkedHashMap<FuCard, int> retMap = LinkedHashMap();
+    retMap[FuCard.sit] = 0;
+    retMap[FuCard.innovation] = 0;
+    retMap[FuCard.erudition] = 0;
+    retMap[FuCard.wealth] = 0;
+    retMap[FuCard.health] = 0;
     for (final card in cards) {
-      retMap[card.type] = retMap[card.type]! + 1;
+      retMap[card.card] = retMap[card.card]! + 1;
     }
     return retMap.entries.map((entry) {
       return Fu(entry.key, cardTypeToString(entry.key), entry.value);
@@ -186,7 +187,7 @@ class _FuPageState extends State<FuPage> {
         Navigator.of(context).push(
           MaterialPageRoute(builder: (BuildContext context) {
             return FuRecordListPage(
-              cardList.where((e) => e.type == fuItem.type).toList(),
+              cardList.where((e) => e.card == fuItem.type).toList(),
               title: '我的福卡(${fuItem.name})',
             );
           }),
@@ -195,17 +196,20 @@ class _FuPageState extends State<FuPage> {
     }
 
     return FutureBuilder<List<MyCard>>(
-        // future: ServicePool.fu.getList(),
-        future: MockPool.fu.getList(),
+        future: ServicePool.fu.getList(),
+        // future: MockPool.fu.getList(),
         builder: (context, snapshot) {
+          Log.info(snapshot.connectionState);
           if (snapshot.connectionState == ConnectionState.done) {
+            Log.info(snapshot.data);
             if (snapshot.hasData) {
               final data = snapshot.data!;
+              Log.info('显示卡片列表');
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
                 child: Row(
-                  children: (Fu.fromCardList(data) + Fu.fromCardList(data)).map((e) {
+                  children: (Fu.fromCardList(data)).map((e) {
                     return buildItem(data, e);
                   }).toList(),
                 ),
@@ -282,13 +286,7 @@ class _FuPageState extends State<FuPage> {
         title: const Text('扫一扫，福气等你来'),
         automaticallyImplyLeading: false,
         actions: [
-          IconButton(
-            onPressed: () {
-              logout(context);
-            },
-            icon: const Icon(Icons.logout),
-          ),
-          IconButton(
+          TextButton(
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                 return FuRecordListPage(
@@ -298,8 +296,24 @@ class _FuPageState extends State<FuPage> {
                 );
               }));
             },
-            icon: const Icon(Icons.history),
-          )
+            child: const Text(
+              '我的卡片',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              launchInBrowser('https://support.qq.com/products/377648');
+            },
+            child: const Text(
+              '反馈',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
         ],
       ),
       body: Container(

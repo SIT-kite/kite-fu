@@ -9,9 +9,6 @@ enum UploadResult {
   /// 达到最大限制
   maxLimit,
 
-  /// 没抽中
-  failed,
-
   /// 抽中
   successful,
 
@@ -21,16 +18,14 @@ enum UploadResult {
 
 UploadResult _intToUploadResult(int foo) {
   return [
-    null,
     UploadResult.noBadge,
     UploadResult.maxLimit,
-    UploadResult.failed,
     UploadResult.successful,
     UploadResult.outdated,
-  ][foo]!;
+  ][foo - 1];
 }
 
-enum FuType {
+enum FuCard {
   /// 无效卡片
   noCard,
 
@@ -48,10 +43,13 @@ enum FuType {
 
   /// 康宁
   health,
+
+  /// 风筝福
+  kite,
 }
 
-FuType _intToFuType(int foo) {
-  return FuType.values[foo];
+FuCard _intToFuType(int foo) {
+  return FuCard.values[foo];
 }
 
 @JsonSerializable(createToJson: false)
@@ -62,12 +60,12 @@ class UploadResultModel {
 
   /// 福卡类型
   @JsonKey(fromJson: _intToFuType)
-  FuType type = FuType.noCard;
+  FuCard card = FuCard.noCard;
   UploadResultModel();
   factory UploadResultModel.fromJson(Map<String, dynamic> json) => _$UploadResultModelFromJson(json);
   @override
   String toString() {
-    return 'UploadResultModel{result: $result, type: $type}';
+    return 'UploadResultModel{result: $result, type: $card}';
   }
 }
 
@@ -75,25 +73,12 @@ class UploadResultModel {
 @JsonSerializable(createToJson: false)
 class MyCard {
   @JsonKey(fromJson: _intToFuType)
-  FuType type = FuType.noCard;
+  FuCard card = FuCard.noCard;
   DateTime ts = DateTime.now();
   MyCard();
   factory MyCard.fromJson(Map<String, dynamic> json) => _$MyCardFromJson(json);
   @override
   String toString() {
-    return 'MyCard{type: $type, ts: $ts}';
-  }
-}
-
-/// 开奖信息
-@JsonSerializable(createToJson: false)
-class PraiseResult {
-  bool hasResult = false;
-  String url = '';
-  PraiseResult();
-  factory PraiseResult.fromJson(Map<String, dynamic> json) => _$PraiseResultFromJson(json);
-  @override
-  String toString() {
-    return 'PraiseResult{hasResult: $hasResult, url: $url}';
+    return 'MyCard{card: $card, ts: $ts}';
   }
 }

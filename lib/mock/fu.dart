@@ -16,9 +16,9 @@ class FuMock implements FuDao {
   }
 
   @override
-  Future<PraiseResult> getResult() async {
+  Future<String?> getResult() async {
     // 未开奖
-    return PraiseResult()..hasResult = false;
+    return null;
   }
 
   @override
@@ -38,15 +38,17 @@ class FuMock implements FuDao {
     Log.info('识别成功');
     if (Random.secure().nextInt(2) == 0) {
       Log.info('没抽到卡片');
-      return UploadResultModel()..result = UploadResult.failed;
+      return UploadResultModel()
+        ..result = UploadResult.successful
+        ..card = FuCard.noCard;
     }
     Log.info('抽到卡片');
     final card = UploadResultModel()
       ..result = UploadResult.successful
-      ..type = FuType.values[Random.secure().nextInt(FuType.values.length - 1) + 1];
+      ..card = FuCard.values[Random.secure().nextInt(FuCard.values.length - 1) + 1];
     // 添加到卡包
     myCards.add(MyCard()
-      ..type = card.type
+      ..card = card.card
       ..ts = DateTime.now());
     return card;
   }

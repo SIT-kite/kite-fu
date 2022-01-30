@@ -18,7 +18,7 @@ class FuRecordListPage extends StatelessWidget {
     return ListView.separated(
         itemBuilder: (context, i) {
           return ListTile(
-            title: Text(cardTypeToString(recordList[i].type)),
+            title: Text(cardTypeToString(recordList[i].card)),
             subtitle: Text(recordList[i].ts.toString().split('.')[0]),
           );
         },

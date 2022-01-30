@@ -1,12 +1,13 @@
 import 'package:kite_fu/entity/fu.dart';
 
-String cardTypeToString(FuType type) {
+String cardTypeToString(FuCard type) {
   return {
-    FuType.noCard: '无卡片',
-    FuType.sit: '上应福',
-    FuType.innovation: '创新福',
-    FuType.erudition: '博学福',
-    FuType.wealth: '富贵福',
-    FuType.health: '康宁福',
+    FuCard.noCard: '无卡片',
+    FuCard.sit: '上应福',
+    FuCard.innovation: '创新福',
+    FuCard.erudition: '博学福',
+    FuCard.wealth: '富贵福',
+    FuCard.health: '康宁福',
+    FuCard.kite: '风筝福',
   }[type]!;
 }

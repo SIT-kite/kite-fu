@@ -10,5 +10,5 @@ abstract class FuDao {
   Future<List<MyCard>> getList();
 
   /// 查询中奖结果
-  Future<PraiseResult> getResult();
+  Future<String?> getResult();
 }
