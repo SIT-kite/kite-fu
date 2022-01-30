@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kite_fu/global/init_util.dart';
-import 'package:kite_fu/page/fu/fu.dart';
-import 'package:kite_fu/page/login.dart';
 import 'package:kite_fu/page/route_table.dart';
-
-import 'global/storage_pool.dart';
+import 'package:oktoast/oktoast.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,28 +9,15 @@ void main() async {
 
   const primaryColor = Colors.red;
   final themeData = ThemeData(primaryColor: primaryColor, primarySwatch: createThemeSwatch(primaryColor));
-
-  runApp(MaterialApp(
+  final app = MaterialApp(
     theme: themeData,
     initialRoute: RouteTable.indexPath,
     onGenerateRoute: RouteTable.onGenerateRoute,
     title: '2022 新春迎福',
-    routes: {
-      '/login': (context) {
-        if (StoragePool.jwt.jwtToken != null) {
-          Navigator.pushReplacementNamed(context, '/fu');
-        }
-        return const LoginPage();
-      },
-      '/fu': (context) {
-        if (StoragePool.jwt.jwtToken == null) {
-          Navigator.pushReplacementNamed(context, '/login');
-        }
-        return const FuPage();
-      },
-    },
     debugShowCheckedModeBanner: false,
-  ));
+    builder: (_, Widget? child) => OKToast(child: child!),
+  );
+  runApp(app);
 }
 
 MaterialColor createThemeSwatch(Color color) {
