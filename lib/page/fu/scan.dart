@@ -91,17 +91,20 @@ class _ScanPageState extends State<ScanPage> {
   }
 
   Future<void> loop() async {
+    Log.info('进入拍照循环');
     while (true) {
       if (webviewController == null) {
         break;
       }
       if (await isCameraError()) {
+        Log.info('相机错误');
         setState(() {
           isCameraErrorState = true;
         });
       }
+      await Future.delayed(const Duration(seconds: 3));
       if (await isCameraInit()) {
-        await Future.delayed(const Duration(seconds: 3));
+        Log.info('相机初始化成功');
         final imageBuffer = await takePhoto();
         if (imageBuffer != null && imageBuffer.isNotEmpty) {
           try {
