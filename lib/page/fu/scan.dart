@@ -47,21 +47,36 @@ class _ScanPageState extends State<ScanPage> {
     }
 
     Future<void> showFuCardResult() async {
-      showScanResult(cardTypeToString(card));
+      // 显示扫到福的结果
+      String name = cardTypeToString(card);
+      showScanResult(name);
+      if (card == FuCard.noCard) {
+        // TODO 没扫到应当显示一些其他东西
+        return;
+      }
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            contentPadding: const EdgeInsets.all(0),
+            children: [Image.asset('assets/fu_card/$name.jpg')],
+          );
+        },
+      );
     }
 
     switch (result) {
       case UploadResult.noBadge:
-        showScanResult('快去找一个校徽吧 😂😂😂');
+        showScanResult('快去找一个校徽吧 😂');
         break;
       case UploadResult.maxLimit:
-        showScanResult('已达当日最大次数限制 😭😭😭');
+        showScanResult('已达当日最大次数限制 😭');
         break;
       case UploadResult.successful:
         await showFuCardResult();
         break;
       case UploadResult.outdated:
-        showScanResult('活动已过期');
+        showScanResult('活动已过期 😱');
         Navigator.pop(context);
         break;
     }
