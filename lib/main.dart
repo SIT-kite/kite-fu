@@ -3,7 +3,6 @@ import 'package:kite_fu/global/init_util.dart';
 import 'package:kite_fu/page/fu/fu.dart';
 import 'package:kite_fu/page/login.dart';
 import 'package:kite_fu/page/route_table.dart';
-import 'package:kite_fu/page/welcome.dart';
 
 import 'global/storage_pool.dart';
 
@@ -19,7 +18,6 @@ void main() async {
     initialRoute: RouteTable.indexPath,
     onGenerateRoute: RouteTable.onGenerateRoute,
     title: '2022 新春迎福',
-    home: StoragePool.jwt.jwtToken == null ? const WelcomePage() : const FuPage(),
     routes: {
       '/login': (context) {
         if (StoragePool.jwt.jwtToken != null) {
