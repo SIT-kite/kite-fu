@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   static void onOpenUserLicense() {
-	    const url = "https://cdn.kite.sunnysab.cn/license/";
+    const url = "https://cdn.kite.sunnysab.cn/license/";
     launchInBrowser(url);
   }
 
@@ -174,9 +174,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Stack(
         children: [
           Center(
-            child:
-                // Create new container and make it center in vertical direction.
-                Container(
+            child: Container(
               width: screenWidth,
               padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
               child: Column(
