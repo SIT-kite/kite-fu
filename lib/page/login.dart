@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                   });
                 },
               ),
-              labelText: '密码',
+              labelText: 'OA密码',
               hintText: '输入你的密码',
               icon: const Icon(Icons.lock),
             ),
