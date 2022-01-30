@@ -37,6 +37,6 @@ class FuService extends AService implements FuDao {
       contentType: 'text/plain',
     );
     Log.info('上传结果: ${response.data}');
-    return UploadResultModel();
+    return UploadResultModel.fromJson(response.data);
   }
 }
