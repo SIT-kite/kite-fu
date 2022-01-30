@@ -169,10 +169,7 @@ class _ScanPageState extends State<ScanPage> {
             '当前浏览器环境不支持开启摄像头',
             '请尝试更换浏览器重试',
           ].map((e) {
-            return Text(
-              e,
-              style: const TextStyle(fontSize: 25),
-            );
+            return Text(e, style: const TextStyle(fontSize: 25));
           }).toList(),
         ),
       );
@@ -207,10 +204,7 @@ class _ScanPageState extends State<ScanPage> {
             //     icon: Icon(Icons.add)),
             TextButton(
               onPressed: () => launchInBrowser('https://support.qq.com/products/377648'),
-              child: const Text(
-                '反馈',
-                style: TextStyle(color: Colors.white),
-              ),
+              child: const Text('反馈', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),

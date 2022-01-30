@@ -1,10 +1,11 @@
-// Rule of student id.
+// Rule for student id.
 final RegExp reStudentId = RegExp(r'^((\d{9})|(\d{6}[YGHE\d]\d{3}))$');
 
 String? studentIdValidator(String? username) {
   if (username != null && username.isNotEmpty) {
-    // When user complete his input, check it.
-    if (((username.length == 9 || username.length == 10) && !reStudentId.hasMatch(username)) || username.length > 10) {
+    // When user complete his input (len >= 9), check it.
+    const len = username.length;
+    if (((len == 9 || len == 10) && !reStudentId.hasMatch(username)) || len > 10) {
       return '学号格式不正确';
     }
   }
