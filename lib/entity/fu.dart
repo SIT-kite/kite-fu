@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:kite_fu/util/logger.dart';
 
 part 'fu.g.dart';
 
@@ -69,11 +70,18 @@ class UploadResultModel {
   }
 }
 
+DateTime _parseTs(String src) {
+  final dt = DateTime.parse(src);
+  // Log.info(dt.toLocal());
+  return dt.toLocal();
+}
+
 /// 我的卡片
 @JsonSerializable(createToJson: false)
 class MyCard {
   @JsonKey(fromJson: _intToFuType)
   FuCard card = FuCard.noCard;
+  @JsonKey(fromJson: _parseTs)
   DateTime ts = DateTime.now();
   MyCard();
   factory MyCard.fromJson(Map<String, dynamic> json) => _$MyCardFromJson(json);
