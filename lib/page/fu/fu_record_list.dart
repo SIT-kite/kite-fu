@@ -6,7 +6,13 @@ import 'util.dart';
 class FuRecordListPage extends StatelessWidget {
   final List<MyCard> recordList;
   final String? title;
-  const FuRecordListPage(this.recordList, {Key? key, this.title}) : super(key: key);
+  final String emptyCardText;
+  const FuRecordListPage(
+    this.recordList, {
+    Key? key,
+    this.title,
+    this.emptyCardText = '您还没有获得此卡片',
+  }) : super(key: key);
 
   Widget buildList() {
     return ListView.separated(
@@ -33,8 +39,8 @@ class FuRecordListPage extends StatelessWidget {
       ),
       body: recordList.isNotEmpty
           ? buildList()
-          : const Center(
-              child: Text('您还没有获得此卡片'),
+          : Center(
+              child: Text(emptyCardText),
             ),
     );
   }
