@@ -3,9 +3,12 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kite_fu/entity/fu.dart';
 import 'package:kite_fu/global/service_pool.dart';
+import 'package:kite_fu/page/fu/util.dart';
 import 'package:kite_fu/util/logger.dart';
 import 'package:kite_fu/util/url_launcher.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:webviewx/webviewx.dart';
 
 class ScanPage extends StatefulWidget {
@@ -30,6 +33,40 @@ class _ScanPageState extends State<ScanPage> {
     }
   }
 
+  /// 当获取到扫描结果时
+  Future<void> onGotScanResult(UploadResult result, FuCard card) async {
+    showScanResult(String showText) {
+      Log.info(showText);
+      return showToast(
+        showText,
+        position: ToastPosition.bottom,
+        context: context,
+        backgroundColor: Colors.black.withOpacity(0.8),
+        radius: 13.0,
+      );
+    }
+
+    Future<void> showFuCardResult() async {
+      showScanResult(cardTypeToString(card));
+    }
+
+    switch (result) {
+      case UploadResult.noBadge:
+        showScanResult('快去找一个校徽吧 😂😂😂');
+        break;
+      case UploadResult.maxLimit:
+        showScanResult('已达当日最大次数限制 😭😭😭');
+        break;
+      case UploadResult.successful:
+        await showFuCardResult();
+        break;
+      case UploadResult.outdated:
+        showScanResult('活动已过期');
+        Navigator.pop(context);
+        break;
+    }
+  }
+
   void onCameraInitialized() {
     Log.info('摄像头正常启动');
     setState(() {
@@ -37,11 +74,15 @@ class _ScanPageState extends State<ScanPage> {
     });
     (() async {
       while (true) {
+        if (webviewController == null) {
+          break;
+        }
         if (isCameraInit && !isCameraError) {
           await Future.delayed(const Duration(seconds: 3));
           final imageBuffer = await takePhoto();
           if (imageBuffer != null && imageBuffer.isNotEmpty) {
-            ServicePool.fu.upload(imageBuffer);
+            UploadResultModel result = await ServicePool.fu.upload(imageBuffer);
+            await onGotScanResult(result.result, result.card);
           }
         }
       }
