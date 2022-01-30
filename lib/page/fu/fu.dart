@@ -287,7 +287,7 @@ class _FuPageState extends State<FuPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('扫一扫，福气等你来'),
+        title: const Text('福气等你来'),
         automaticallyImplyLeading: false,
         actions: [
           TextButton(

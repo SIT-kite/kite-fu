@@ -53,7 +53,7 @@ class _ScanPageState extends State<ScanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('扫描页'),
+        title: const Text('扫一扫 迎福卡'),
         actions: [
           IconButton(
             onPressed: () async {
