@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'login.dart';
+import 'package:kite_fu/global/storage_pool.dart';
+import 'package:kite_fu/page/route_table.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -30,14 +30,16 @@ class WelcomePage extends StatelessWidget {
                 autofocus: true,
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   side: const BorderSide(width: 1, color: Colors.yellow),
                 ),
                 child: const Text('过福年',
                     style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold, fontSize: 40)),
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const LoginPage()));
+                  Navigator.of(context).pushReplacementNamed(
+                    StoragePool.jwt.jwtToken == null ? RouteTable.loginPath : RouteTable.fuPath,
+                  );
                 }),
           ),
         ],
