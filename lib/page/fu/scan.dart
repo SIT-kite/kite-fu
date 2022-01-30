@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kite_fu/entity/fu.dart';
-import 'package:kite_fu/global/mock_pool.dart';
 import 'package:kite_fu/global/service_pool.dart';
 import 'package:kite_fu/page/fu/util.dart';
 import 'package:kite_fu/util/logger.dart';
@@ -200,12 +199,12 @@ class _ScanPageState extends State<ScanPage> {
         appBar: AppBar(
           title: const Text('扫一扫 迎福卡'),
           actions: [
-            IconButton(
-                onPressed: () async {
-                  final image = await MockPool.fu.upload(Uint8List(0));
-                  onGotScanResult(image.result, image.card);
-                },
-                icon: Icon(Icons.add)),
+            // IconButton(
+            //     onPressed: () async {
+            //       final image = await MockPool.fu.upload(Uint8List(0));
+            //       onGotScanResult(image.result, image.card);
+            //     },
+            //     icon: Icon(Icons.add)),
             TextButton(
               onPressed: () => launchInBrowser('https://support.qq.com/products/377648'),
               child: const Text(
