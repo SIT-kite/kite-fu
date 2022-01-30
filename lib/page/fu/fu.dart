@@ -197,24 +197,28 @@ class _FuPageState extends State<FuPage> {
 
     return FutureBuilder<List<MyCard>>(
         future: ServicePool.fu.getList(),
-        // future: MockPool.fu.getList(),
         builder: (context, snapshot) {
           Log.info(snapshot.connectionState);
           if (snapshot.connectionState == ConnectionState.done) {
             Log.info(snapshot.data);
-            if (snapshot.hasData) {
-              final data = snapshot.data!;
-              Log.info('显示卡片列表');
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
-                child: Row(
-                  children: (Fu.fromCardList(data)).map((e) {
-                    return buildItem(data, e);
-                  }).toList(),
-                ),
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(snapshot.error.toString()),
               );
             }
+            final data = snapshot.data!;
+            // 卡片需要在查看所有卡片处复用
+            myCards = data;
+            Log.info('显示卡片列表');
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+              child: Row(
+                children: (Fu.fromCardList(data)).map((e) {
+                  return buildItem(data, e);
+                }).toList(),
+              ),
+            );
           }
           return const Center(child: CircularProgressIndicator());
         });
