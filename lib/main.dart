@@ -3,6 +3,7 @@ import 'package:kite_fu/global/init_util.dart';
 import 'package:kite_fu/global/storage_pool.dart';
 import 'package:kite_fu/page/fu/fu.dart';
 import 'package:kite_fu/page/login.dart';
+import 'package:kite_fu/page/welcome.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +14,7 @@ void main() async {
   runApp(MaterialApp(
     theme: themeData,
     title: '扫福活动',
-    home: StoragePool.jwt.jwtToken == null ? const LoginPage() : const FuPage(),
+    home: StoragePool.jwt.jwtToken == null ? const WelcomePage() : const FuPage(),
     routes: {
       '/login': (context) {
         if (StoragePool.jwt.jwtToken != null) {
