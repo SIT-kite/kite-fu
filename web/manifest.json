@@ -1,35 +1,18 @@
 {
-    "name": "kite_fu",
-    "short_name": "kite_fu",
+    "name": "新春迎五福",
+    "short_name": "迎五福",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "快来试试你的好运气，赢精美礼品",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
         {
-            "src": "icons/Icon-192.png",
-            "sizes": "192x192",
+            "src": "favicon.png",
+            "sizes": "381x381",
             "type": "image/png"
         },
-        {
-            "src": "icons/Icon-512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        },
-        {
-            "src": "icons/Icon-maskable-192.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "maskable"
-        },
-        {
-            "src": "icons/Icon-maskable-512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "maskable"
-        }
     ]
 }
