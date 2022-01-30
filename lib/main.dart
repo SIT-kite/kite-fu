@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kite_fu/global/init_util.dart';
-import 'package:kite_fu/global/storage_pool.dart';
-import 'package:kite_fu/page/fu/fu.dart';
-import 'package:kite_fu/page/login.dart';
-import 'package:kite_fu/page/welcome.dart';
+import 'package:kite_fu/page/route_table.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,24 +8,12 @@ void main() async {
 
   const primaryColor = Colors.red;
   final themeData = ThemeData(primaryColor: primaryColor, primarySwatch: createThemeSwatch(primaryColor));
+
   runApp(MaterialApp(
     theme: themeData,
     title: '扫福活动',
-    home: StoragePool.jwt.jwtToken == null ? const WelcomePage() : const FuPage(),
-    routes: {
-      '/login': (context) {
-        if (StoragePool.jwt.jwtToken != null) {
-          Navigator.pushReplacementNamed(context, '/fu');
-        }
-        return const LoginPage();
-      },
-      '/fu': (context) {
-        if (StoragePool.jwt.jwtToken == null) {
-          Navigator.pushReplacementNamed(context, '/login');
-        }
-        return const FuPage();
-      },
-    },
+    initialRoute: RouteTable.indexPath,
+    onGenerateRoute: RouteTable.onGenerateRoute,
     debugShowCheckedModeBanner: false,
   ));
 }
