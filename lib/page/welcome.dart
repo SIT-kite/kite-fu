@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:kite_fu/global/storage_pool.dart';
 import 'package:kite_fu/page/route_table.dart';
+
+const backgroundList = ["1.jpg", "2.png", "3.jpg", "4.jpg", "5.jpg"];
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -8,6 +12,7 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final bg = backgroundList[Random().nextInt(backgroundList.length)];
 
     return Scaffold(
       body: Stack(
@@ -16,7 +21,7 @@ class WelcomePage extends StatelessWidget {
           SizedBox(
               width: screenSize.width,
               height: screenSize.height,
-              child: const Image(image: AssetImage("assets/welcome.jpg"), fit: BoxFit.cover)),
+              child: Image(image: AssetImage("assets/welcome/$bg"), fit: BoxFit.cover)),
           // Transparent layer.
           // Container(color: Colors.black.withOpacity(0.35)),
           // Front weights. Texts and buttons are on the left bottom of the screen.
@@ -26,17 +31,9 @@ class WelcomePage extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             // 150 px from the bottom edge and 20 px from the left edge.
             padding: const EdgeInsets.only(bottom: 80),
-            child: ElevatedButton(
-                autofocus: true,
-                style: OutlinedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  side: const BorderSide(width: 1, color: Colors.yellow),
-                ),
-                child: const Text('过福年',
-                    style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold, fontSize: 40)),
-                onPressed: () {
+            child: GestureDetector(
+                child: Image.asset('assets/welcome/button.png', height: 50),
+                onTap: () {
                   Navigator.of(context).pushReplacementNamed(
                     StoragePool.jwt.jwtToken == null ? RouteTable.loginPath : RouteTable.fuPath,
                   );

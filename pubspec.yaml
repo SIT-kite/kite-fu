@@ -35,6 +35,7 @@ flutter:
     - assets/scan/index.html
     - assets/fu/
     - assets/fu_card/
+    - assets/welcome/
 
 flutter_native_splash:
   fullscreen: true
