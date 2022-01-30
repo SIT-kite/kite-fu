@@ -133,28 +133,45 @@ class _FuPageState extends State<FuPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '当前已登录用户: ${currentUser!.account}',
-                style: const TextStyle(color: Color.fromARGB(0xFF, 252, 214, 177)),
-              ),
-              TextButton(
-                onPressed: () {
-                  logout(context);
-                },
-                child: const Text(
-                  '退出账户',
-                  style: TextStyle(
-                    color: Colors.blue,
+          Container(
+            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+            decoration: BoxDecoration(
+              color: Colors.red.withAlpha(220),
+              borderRadius: const BorderRadius.all(Radius.circular(15)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '当前已登录用户: ${currentUser!.account}',
+                      style: const TextStyle(color: Color.fromARGB(0xFF, 252, 214, 177)),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        logout(context);
+                      },
+                      child: const Text(
+                        '退出账户',
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  '您是第 ${currentUser!.uid} 个注册小风筝的用户',
+                  style: const TextStyle(
+                    color: Color.fromARGB(0xFF, 252, 214, 177),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-
-          // Text('您是第 ${currentUser!.uid} 个注册小风筝的用户'),
           const SizedBox(height: 30),
           buildScanButton(),
           // const SizedBox(height: 20),
@@ -277,6 +294,7 @@ class _FuPageState extends State<FuPage> {
                 return FuRecordListPage(
                   myCards,
                   title: '我的所有福卡',
+                  emptyCardText: '您还没有获得任何卡片',
                 );
               }));
             },
