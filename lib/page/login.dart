@@ -154,13 +154,10 @@ class _LoginPageState extends State<LoginPage> {
         ),
         TextButton(
           child: const Text(
-            '忘记密码?',
+            '遇到问题?',
             style: TextStyle(color: Colors.grey),
           ),
-          onPressed: () {
-            launchInBrowser(
-                'https://authserver.sit.edu.cn/authserver/getBackPasswordMainPage.do?service=https%3A%2F%2Fmyportal.sit.edu.cn%3A443%2F');
-          },
+          onPressed: () => launchInBrowser('https://support.qq.com/products/377648'),
         ),
       ],
     );
