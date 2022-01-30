@@ -47,6 +47,11 @@ const dataUri_Config = {
 if (typeof cameraViewInitialized      !== "function") var cameraViewInitialized = _;
 if (typeof cameraViewInitializedError !== "function") var cameraViewInitializedError = _;
 
+var _isInitSuccessful = false;
+function isInitSuccessful(){return _isInitSuccessful;}
+var _isInitError = false;
+function isInitError(){return _isInitError;}
+
 // 使用默认分辨率开启摄像头
 function startCameraDefaultResolution() {
 	cameraPhoto.startCamera(camera_FacingMode).then(
@@ -54,11 +59,13 @@ function startCameraDefaultResolution() {
 			log(cameraPhoto.getCameraSettings());
 			log(cameraPhoto.getInputVideoDeviceInfos());
 			cameraViewInitialized();
+			_isInitSuccessful = true;
 		}
 	).catch(
 		function (error) {
 			err('Camera not started!', error);
 			cameraViewInitializedError();
+			_isInitError = true;
 		}
 	);
 }

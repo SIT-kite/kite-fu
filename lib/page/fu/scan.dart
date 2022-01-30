@@ -21,8 +21,16 @@ class ScanPage extends StatefulWidget {
 class _ScanPageState extends State<ScanPage> {
   Size get screenSize => MediaQuery.of(context).size;
   WebViewXController? webviewController;
-  bool isCameraInit = false;
-  bool isCameraError = false;
+
+  bool isCameraErrorState = false;
+
+  Future<bool> isCameraInit() async {
+    return await webviewController!.callJsMethod('isInitSuccessful', []);
+  }
+
+  Future<bool> isCameraError() async {
+    return await webviewController!.callJsMethod('isInitError', []);
+  }
 
   Future<Uint8List?> takePhoto() async {
     if (webviewController == null) {
@@ -82,33 +90,27 @@ class _ScanPageState extends State<ScanPage> {
     }
   }
 
-  void onCameraInitialized() {
-    Log.info('摄像头正常启动');
-    setState(() {
-      isCameraInit = true;
-    });
-    (() async {
-      while (true) {
-        if (webviewController == null) {
-          break;
-        }
-        if (isCameraInit && !isCameraError) {
-          await Future.delayed(const Duration(seconds: 3));
-          final imageBuffer = await takePhoto();
-          if (imageBuffer != null && imageBuffer.isNotEmpty) {
+  Future<void> loop() async {
+    while (true) {
+      if (webviewController == null) {
+        break;
+      }
+      if (await isCameraError()) {
+        setState(() {
+          isCameraErrorState = true;
+        });
+      }
+      if (await isCameraInit()) {
+        await Future.delayed(const Duration(seconds: 3));
+        final imageBuffer = await takePhoto();
+        if (imageBuffer != null && imageBuffer.isNotEmpty) {
+          try {
             UploadResultModel result = await ServicePool.fu.upload(imageBuffer);
             await onGotScanResult(result.result, result.card);
-          }
+          } catch (_) {}
         }
       }
-    })();
-  }
-
-  void onCameraError(msg) {
-    Log.info('摄像头发生异常');
-    setState(() {
-      isCameraError = true;
-    });
+    }
   }
 
   Widget buildCameraView(String htmlSource) {
@@ -118,19 +120,10 @@ class _ScanPageState extends State<ScanPage> {
       height: screenSize.height,
       width: screenSize.width,
       onWebViewCreated: (controller) => webviewController = controller,
-      dartCallBacks: {
-        DartCallback(
-            name: 'cameraViewInitialized',
-            callBack: (msg) {
-              Log.info('摄像头已启动');
-              onCameraInitialized();
-            }),
-        DartCallback(
-            name: 'cameraViewInitializedError',
-            callBack: (msg) {
-              Log.info('摄像头启动失败');
-              onCameraError(msg);
-            }),
+      onPageFinished: (String src) async {
+        Log.info('WebView页面加载完毕');
+        // 开始进入拍照循环
+        loop();
       },
     );
   }
@@ -140,8 +133,6 @@ class _ScanPageState extends State<ScanPage> {
     Log.info('相机已销毁');
     webviewController?.dispose();
     webviewController = null;
-    isCameraInit = false;
-    isCameraError = false;
     super.dispose();
   }
 
@@ -194,6 +185,6 @@ class _ScanPageState extends State<ScanPage> {
             ),
           ],
         ),
-        body: isCameraError ? buildErrorPage() : buildNormalPage());
+        body: isCameraErrorState ? buildErrorPage() : buildNormalPage());
   }
 }
