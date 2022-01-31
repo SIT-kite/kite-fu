@@ -44,6 +44,7 @@ class _ScanPageState extends State<ScanPage> {
 
   /// 当获取到扫描结果时
   Future<void> onGotScanResult(UploadResult result, FuCard card) async {
+    /// 显示toast
     showScanResult(String showText) {
       Log.info(showText);
       return showToast(
@@ -55,6 +56,7 @@ class _ScanPageState extends State<ScanPage> {
       );
     }
 
+    /// 显示福卡
     Widget showFuCard(BuildContext context, String name) {
       return SimpleDialog(
         contentPadding: const EdgeInsets.all(0),
@@ -69,7 +71,7 @@ class _ScanPageState extends State<ScanPage> {
                 child: SizedBox(
                   child: ElevatedButton(
                     onPressed: () async {
-                      showScanResult('恭喜您，您收获了一张$name');
+                      showScanResult('🎉🎉🎉恭喜收获了 $name 一张');
                       Navigator.pop(context);
                     },
                     child: const Text('立即收下'),
@@ -82,6 +84,7 @@ class _ScanPageState extends State<ScanPage> {
       );
     }
 
+    /// 获取随机语言，用于无福卡时弹出
     String _getRandomPrompt() {
       const newFeatures = [
         '支持直接评教了',
@@ -159,8 +162,12 @@ class _ScanPageState extends State<ScanPage> {
       case UploadResult.successful:
         await showFuCardResult();
         break;
-      case UploadResult.outdated:
-        showScanResult('活动已过期 😱');
+      case UploadResult.tooLate:
+        showScanResult('来晚了，活动已过期 😱');
+        Navigator.pop(context);
+        break;
+      case UploadResult.tooEarly:
+        showScanResult('来早了，活动还未开始哦~ 😊');
         Navigator.pop(context);
         break;
     }

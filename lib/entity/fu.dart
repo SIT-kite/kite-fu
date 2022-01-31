@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kite_fu/util/logger.dart';
 
 part 'fu.g.dart';
 
@@ -14,16 +13,14 @@ enum UploadResult {
   successful,
 
   /// 活动结束
-  outdated,
+  tooLate,
+
+  /// 活动未开始
+  tooEarly,
 }
 
 UploadResult _intToUploadResult(int foo) {
-  return [
-    UploadResult.noBadge,
-    UploadResult.maxLimit,
-    UploadResult.successful,
-    UploadResult.outdated,
-  ][foo - 1];
+  return UploadResult.values[foo - 1];
 }
 
 enum FuCard {
