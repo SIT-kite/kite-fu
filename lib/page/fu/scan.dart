@@ -106,6 +106,7 @@ class _ScanPageState extends State<ScanPage> {
     }
 
     Widget showKitePrompt(BuildContext context) {
+      showScanResult('很抱歉，未抽中福卡😭');
       return SimpleDialog(
         contentPadding: const EdgeInsets.all(0),
         children: [
@@ -118,9 +119,31 @@ class _ScanPageState extends State<ScanPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset('assets/icon.png'),
-                    const Text('你知道吗'),
-                    Text(_getRandomPrompt()),
+                    Image.asset(
+                      'assets/icon.png',
+                      height: 100,
+                    ),
+                    const SizedBox(height: 100),
+                    const Text(
+                      '你知道吗',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(0xFF, 252, 214, 177),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      margin: const EdgeInsets.only(left: 50, right: 50),
+                      child: Text(
+                        _getRandomPrompt(),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          // fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(0xFF, 252, 214, 177),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -144,7 +167,7 @@ class _ScanPageState extends State<ScanPage> {
     Future<void> showFuCardResult() async {
       // 显示扫到福的结果
       String name = cardTypeToString(card);
-      showScanResult(name);
+      // showScanResult(name);
 
       await showDialog(
         context: context,
@@ -261,8 +284,8 @@ class _ScanPageState extends State<ScanPage> {
           actions: [
             // IconButton(
             //     onPressed: () async {
-            //       final image = await MockPool.fu.upload(Uint8List(0));
-            //       onGotScanResult(image.result, image.card);
+            //       // final image = await MockPool.fu.upload(Uint8List(0));
+            //       onGotScanResult(UploadResult.successful, FuCard.noCard);
             //     },
             //     icon: Icon(Icons.add)),
             TextButton(
