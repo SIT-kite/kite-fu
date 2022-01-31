@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -54,42 +55,97 @@ class _ScanPageState extends State<ScanPage> {
       );
     }
 
+    Widget showFuCard(BuildContext context, String name) {
+      return SimpleDialog(
+        contentPadding: const EdgeInsets.all(0),
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            fit: StackFit.loose,
+            children: [
+              Image.asset('assets/fu_card/$name.jpg'),
+              Positioned(
+                bottom: 30,
+                child: SizedBox(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      showScanResult('恭喜您，您收获了一张$name');
+                      Navigator.pop(context);
+                    },
+                    child: const Text('立即收下'),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+
+    String _getRandomPrompt() {
+      const newFeatures = [
+        '支持直接评教了',
+        '关于您数据都存储在您的手机中',
+        '首页下拉刷新可以更新所有信息',
+        '可通过桌面图标直接进入每日上报页面',
+        '还内置了几款小游戏哦~',
+        '支持在网页上反馈了呢',
+        // '开学前将与大家见面',
+        '里长按课程即可选择并计算绩点',
+        '在我手，告别上应大App',
+        '可以方便地查阅书籍',
+        '支持交易二手书啦！',
+        '可以查看消费统计了！',
+        '点击首页上的 logo 有更多功能'
+      ];
+
+      return '小风筝App' + newFeatures[Random().nextInt(newFeatures.length)];
+    }
+
+    Widget showKitePrompt(BuildContext context) {
+      return SimpleDialog(
+        contentPadding: const EdgeInsets.all(0),
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            fit: StackFit.loose,
+            children: [
+              Image.asset('assets/fu_card/空白福.jpg'),
+              Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/icon.png'),
+                    const Text('你知道吗'),
+                    Text(_getRandomPrompt()),
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 30,
+                child: SizedBox(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('我知道啦'),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+
     Future<void> showFuCardResult() async {
       // 显示扫到福的结果
       String name = cardTypeToString(card);
       showScanResult(name);
-      if (card == FuCard.noCard) {
-        // TODO 没扫到应当显示一些其他东西
-        return;
-      }
+
       await showDialog(
         context: context,
-        builder: (context) {
-          return SimpleDialog(
-            contentPadding: const EdgeInsets.all(0),
-            children: [
-              Stack(
-                alignment: Alignment.center,
-                fit: StackFit.loose,
-                children: [
-                  Image.asset('assets/fu_card/$name.jpg'),
-                  Positioned(
-                    bottom: 30,
-                    child: SizedBox(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          showScanResult('恭喜您，您收获了一张$name');
-                          Navigator.pop(context);
-                        },
-                        child: const Text('立即收下'),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          );
-        },
+        builder: card == FuCard.noCard ? showKitePrompt : (context) => showFuCard(context, name),
       );
     }
 
