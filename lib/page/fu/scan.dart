@@ -187,7 +187,7 @@ class _ScanPageState extends State<ScanPage> {
         showScanResult('快去找一个校徽吧 😂');
         break;
       case UploadResult.maxLimit:
-        showScanResult('已达当日最大次数限制 😭');
+        showScanResult('已达当日最大次数限制 😭\n公众号可再领取一次机会(限每天一次)');
         break;
       case UploadResult.successful:
         await showFuCardResult();

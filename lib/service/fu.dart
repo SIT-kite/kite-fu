@@ -39,4 +39,10 @@ class FuService extends AService implements FuDao {
     Log.info('上传结果: ${response.data}');
     return UploadResultModel.fromJson(response.data);
   }
+
+  @override
+  Future<void> share() async {
+    await session.post('https://sunnysab.cn/api/v2/badge/image');
+    Log.info('成功记录一次分享操作');
+  }
 }

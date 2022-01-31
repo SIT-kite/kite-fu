@@ -175,7 +175,20 @@ class _FuPageState extends State<FuPage> {
           ),
           const SizedBox(height: 30),
           buildScanButton(),
-          // const SizedBox(height: 20),
+          const SizedBox(height: 10),
+          TextButton(
+            onPressed: () async {
+              await ServicePool.fu.share();
+              // TODO 补充活动公众号连接
+              launchInBrowser('');
+            },
+            child: const Text(
+              '打开活动公众号页面',
+              style: TextStyle(
+                color: Color.fromARGB(0xFF, 252, 214, 177),
+              ),
+            ),
+          ),
         ],
       ),
     );

@@ -11,4 +11,8 @@ abstract class FuDao {
 
   /// 查询中奖结果
   Future<String?> getResult();
+
+  /// 分享记录接口，记录用户的分享操作
+  /// 每次分享将加一次机会
+  Future<void> share();
 }

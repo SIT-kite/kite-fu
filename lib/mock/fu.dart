@@ -52,4 +52,7 @@ class FuMock implements FuDao {
       ..ts = DateTime.now());
     return card;
   }
+
+  @override
+  Future<void> share() async {}
 }
