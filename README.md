@@ -18,6 +18,7 @@ git clone https://github.com/SIT-kite/kite-fu.git
 cd kite-fu
 
 flutter pub get
+flutter pub run build_runner build
 flutter pub run flutter_native_splash:create
 flutter build web
 ```
