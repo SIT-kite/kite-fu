@@ -34,5 +34,5 @@ jobs:
           port: ${{ secrets.PORT }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_SECRET }}
-          source: "build/web"
+          source: "build/web/"
           target: "/var/kite/web/fu/"
