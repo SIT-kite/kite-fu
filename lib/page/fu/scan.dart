@@ -26,10 +26,16 @@ class _ScanPageState extends State<ScanPage> {
   bool isCameraErrorState = false;
 
   Future<bool> isCameraInit() async {
+    if (webviewController == null) {
+      return false;
+    }
     return await webviewController!.callJsMethod('isInitSuccessful', []);
   }
 
   Future<bool> isCameraError() async {
+    if (webviewController == null) {
+      return false;
+    }
     return await webviewController!.callJsMethod('isInitError', []);
   }
 
@@ -168,6 +174,7 @@ class _ScanPageState extends State<ScanPage> {
       // 显示扫到福的结果
       String name = cardTypeToString(card);
       // showScanResult(name);
+      Log.info('收到了一张 ' + name);
 
       await showDialog(
         context: context,
