@@ -28,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   bool isLicenseAccepted = false;
   bool isProxySettingShown = false;
   bool disableLoginButton = false;
+  bool showPs = false;
 
   void gotoFuMainPage() {
     // 跳转页面并移除所有其他页面
@@ -67,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
       showBasicFlash(context, Text('登录异常: ${e.toString().split('\n')[0]}'));
       setState(() {
         disableLoginButton = false;
+        showPs = true;
       });
     }
   }
@@ -107,8 +109,8 @@ class _LoginPageState extends State<LoginPage> {
                   });
                 },
               ),
-              labelText: 'OA密码',
-              hintText: '输入你的密码',
+              labelText: 'OA密码或身份证号倒数第7到2位',
+              hintText: '输入你的校验信息',
               icon: const Icon(Icons.lock),
             ),
           ),
@@ -188,6 +190,10 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 25),
                   // Login button.
                   buildLoginButton(),
+                  const SizedBox(height: 10),
+                  showPs
+                      ? const Text('PS: 由于假期学校信息化技术中心无值班，在非值班期间学校为保护学校服务器的安全，会将设备关闭，故通过OA密码可能造成登录失败，建议使用身份证号登录')
+                      : Container(),
                 ],
               ),
             ),
