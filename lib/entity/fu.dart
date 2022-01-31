@@ -24,7 +24,7 @@ UploadResult _intToUploadResult(int foo) {
 }
 
 enum FuCard {
-  /// 无效卡片
+  /// 无效福卡
   noCard,
 
   /// 上应
@@ -73,7 +73,7 @@ DateTime _parseTs(String src) {
   return dt.toLocal();
 }
 
-/// 我的卡片
+/// 我的福卡
 @JsonSerializable(createToJson: false)
 class MyCard {
   @JsonKey(fromJson: _intToFuType)

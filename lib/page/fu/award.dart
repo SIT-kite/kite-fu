@@ -23,7 +23,7 @@ class AwardPage extends StatelessWidget {
             if (data != null) {
               return Text('url: $data');
             } else {
-              return const Text('结果未出');
+              return const Text('未出结果');
             }
           }
           return const Center(child: CircularProgressIndicator());

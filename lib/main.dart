@@ -10,10 +10,10 @@ void main() async {
 
   final themeData = ThemeData(primaryColor: primaryColor, primarySwatch: createThemeSwatch(primaryColor));
   final app = MaterialApp(
+    title: '2022 新春迎福',
     theme: themeData,
     initialRoute: RouteTable.indexPath,
     onGenerateRoute: RouteTable.onGenerateRoute,
-    title: '2022 新春迎福',
     debugShowCheckedModeBanner: false,
     builder: (_, Widget? child) => OKToast(child: child!),
   );

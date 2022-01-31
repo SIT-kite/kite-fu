@@ -37,12 +37,12 @@ class FuMock implements FuDao {
     }
     Log.info('识别成功');
     if (Random.secure().nextInt(2) == 0) {
-      Log.info('没抽到卡片');
+      Log.info('没抽到福卡');
       return UploadResultModel()
         ..result = UploadResult.successful
         ..card = FuCard.noCard;
     }
-    Log.info('抽到卡片');
+    Log.info('抽到福卡');
     final card = UploadResultModel()
       ..result = UploadResult.successful
       ..card = FuCard.values[Random.secure().nextInt(FuCard.values.length - 1) + 1];

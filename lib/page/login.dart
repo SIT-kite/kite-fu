@@ -192,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                   buildLoginButton(),
                   const SizedBox(height: 10),
                   showPs
-                      ? const Text('PS: 由于假期学校信息化技术中心无值班，在非值班期间学校为保护学校服务器的安全，会将设备关闭，故通过OA密码可能造成登录失败，建议使用身份证号登录')
+                      ? const Text('PS: 放假期间，学校信息化技术中心会将学校服务器关闭，导致无法使用OA密码登录。届时请使用报到时的身份证号倒数第7到2位登录。')
                       : Container(),
                 ],
               ),

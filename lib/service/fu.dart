@@ -13,16 +13,16 @@ class FuService extends AService implements FuDao {
 
   @override
   Future<List<MyCard>> getList() async {
-    Log.info('请求卡片列表');
+    Log.info('请求福卡列表 /badge/card/');
     final response = await session.get('https://kite.sunnysab.cn/api/v2/badge/card/');
     List<dynamic> list = response.data;
-    Log.info('卡片列表: $list');
+    Log.info('福卡列表: $list');
     return list.map((e) => MyCard.fromJson(e)).toList();
   }
 
   @override
   Future<String?> getResult() async {
-    Log.info('请求开奖结果');
+    Log.info('请求开奖结果 /badge/result');
     final response = await session.get('https://kite.sunnysab.cn/api/v2/badge/result');
     Log.info('开奖结果: ${response.data}');
     return response.data['url'];
@@ -30,7 +30,7 @@ class FuService extends AService implements FuDao {
 
   @override
   Future<UploadResultModel> upload(Uint8List imageBuffer) async {
-    Log.info('上传图片请求');
+    Log.info('上传图片请求 /badge/image');
     final response = await session.post(
       'https://sunnysab.cn/api/badge/image',
       data: base64Encode(imageBuffer),

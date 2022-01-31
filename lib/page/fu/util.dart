@@ -2,7 +2,7 @@ import 'package:kite_fu/entity/fu.dart';
 
 String cardTypeToString(FuCard type) {
   return {
-    FuCard.noCard: '无卡片',
+    FuCard.noCard: '暂无福卡',
     FuCard.sit: '上应福',
     FuCard.innovation: '创新福',
     FuCard.erudition: '博学福',

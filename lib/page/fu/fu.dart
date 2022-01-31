@@ -25,11 +25,7 @@ class Fu {
         mainAxisSize: MainAxisSize.min,
         children: [
           // const Icon(Icons.book, size: 40),
-          Image.asset(
-            'assets/fu/$name.png',
-            width: 40,
-            height: 40,
-          ),
+          Image.asset('assets/fu/$name.png', width: 40,height: 40),
           // SizedBox(height: 10),
           Text(
             name,
@@ -104,11 +100,7 @@ class _FuPageState extends State<FuPage> {
       ),
       child: Column(
         children: [
-          SizedBox(
-            height: 200,
-            width: 200,
-            child: Image.asset('assets/badge.png'),
-          ),
+          SizedBox(child: Image.asset('assets/badge.png'), width: 200, height: 200),
           const SizedBox(height: 10),
           const Text(
             '扫校徽，领福卡',
@@ -121,10 +113,7 @@ class _FuPageState extends State<FuPage> {
         ],
       ),
     );
-    return InkWell(
-      onTap: gotoScanPage,
-      child: view,
-    );
+    return InkWell(onTap: gotoScanPage, child: view);
   }
 
   Widget buildBody() {
@@ -155,20 +144,13 @@ class _FuPageState extends State<FuPage> {
                       onPressed: () {
                         logout(context);
                       },
-                      child: const Text(
-                        '退出账户',
-                        style: TextStyle(
-                          color: Colors.blue,
-                        ),
-                      ),
+                      child: const Text('退出登录', style: TextStyle(color: Colors.blue)),
                     ),
                   ],
                 ),
                 Text(
                   '您是第 ${currentUser!.uid} 个注册小风筝的用户',
-                  style: const TextStyle(
-                    color: Color.fromARGB(0xFF, 252, 214, 177),
-                  ),
+                  style: const TextStyle(color: Color.fromARGB(0xFF, 252, 214, 177)),
                 ),
               ],
             ),
@@ -184,9 +166,7 @@ class _FuPageState extends State<FuPage> {
             },
             child: const Text(
               '打开活动公众号页面',
-              style: TextStyle(
-                color: Color.fromARGB(0xFF, 252, 214, 177),
-              ),
+              style: TextStyle(color: Color.fromARGB(0xFF, 252, 214, 177)),
             ),
           ),
         ],
@@ -215,14 +195,12 @@ class _FuPageState extends State<FuPage> {
           if (snapshot.connectionState == ConnectionState.done) {
             Log.info(snapshot.data);
             if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
-              );
+              return Center(child: Text(snapshot.error.toString()));
             }
             final data = snapshot.data!;
-            // 卡片需要在查看所有卡片处复用
+            // 在 查看所有福卡 处复用福卡
             myCards = data;
-            Log.info('显示卡片列表');
+            Log.info('显示福卡列表');
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
@@ -271,7 +249,7 @@ class _FuPageState extends State<FuPage> {
             child: Column(
               children: const [
                 Padding(padding: EdgeInsets.all(15)),
-                Text("将退出当前账户，是否退出？"),
+                Text("您确定要退出当前账号吗？"),
               ],
             ),
           ),
@@ -309,44 +287,26 @@ class _FuPageState extends State<FuPage> {
                 return FuRecordListPage(
                   myCards,
                   title: '我的所有福卡',
-                  emptyCardText: '您还没有获得任何卡片',
+                  emptyCardText: '您还没有获得任何福卡',
                 );
               }));
             },
-            child: const Text(
-              '我的卡片',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
+            child: const Text('我的福卡', style: TextStyle(color: Colors.white)),
           ),
           TextButton(
             onPressed: () {
               launchInBrowser('https://support.qq.com/products/377648');
             },
-            child: const Text(
-              '反馈',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
+            child: const Text('反馈', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
       body: Container(
         padding: const EdgeInsets.all(10),
         decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/background.jpg'),
-            fit: BoxFit.cover,
-          ),
+          image: DecorationImage(image: AssetImage('assets/background.jpg'), fit: BoxFit.cover),
         ),
-        child: Column(
-          children: [
-            Expanded(child: buildBody()),
-            buildFuRowItems(),
-          ],
-        ),
+        child: Column(children: [Expanded(child: buildBody()), buildFuRowItems()]),
       ),
     );
   }
