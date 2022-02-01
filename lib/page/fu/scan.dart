@@ -48,22 +48,23 @@ class _ScanPageState extends State<ScanPage> {
     }
   }
 
+  /// 显示toast
+  showScanResult(String showText) {
+    Log.info(showText);
+    return showToast(
+      showText,
+      position: ToastPosition.bottom,
+      context: context,
+      backgroundColor: Colors.black.withOpacity(0.8),
+      radius: 13.0,
+    );
+  }
+
   /// 当获取到扫描结果时
   Future<void> onGotScanResult(UploadResult result, FuCard card) async {
-    /// 显示toast
-    showScanResult(String showText) {
-      Log.info(showText);
-      return showToast(
-        showText,
-        position: ToastPosition.bottom,
-        context: context,
-        backgroundColor: Colors.black.withOpacity(0.8),
-        radius: 13.0,
-      );
-    }
-
     /// 显示福卡
-    Widget showFuCard(BuildContext context, String name) {
+    Widget showFuCard(BuildContext context, FuCard card) {
+      String name = cardTypeToString(card);
       return SimpleDialog(
         contentPadding: const EdgeInsets.all(0),
         children: [
@@ -71,7 +72,7 @@ class _ScanPageState extends State<ScanPage> {
             alignment: Alignment.center,
             fit: StackFit.loose,
             children: [
-              Image.asset('assets/fu_card/$name.jpg'),
+              Image.asset('assets/fu_card/${card.name}.jpg'),
               Positioned(
                 bottom: 30,
                 child: SizedBox(
@@ -120,7 +121,7 @@ class _ScanPageState extends State<ScanPage> {
             alignment: Alignment.center,
             fit: StackFit.loose,
             children: [
-              Image.asset('assets/fu_card/空白福.jpg'),
+              Image.asset('assets/fu_card/noCard.jpg'),
               Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -178,7 +179,7 @@ class _ScanPageState extends State<ScanPage> {
 
       await showDialog(
         context: context,
-        builder: card == FuCard.noCard ? showKitePrompt : (context) => showFuCard(context, name),
+        builder: card == FuCard.noCard ? showKitePrompt : (context) => showFuCard(context, card),
       );
     }
 
@@ -221,8 +222,12 @@ class _ScanPageState extends State<ScanPage> {
         final imageBuffer = await takePhoto();
         if (imageBuffer != null && imageBuffer.isNotEmpty) {
           try {
-            UploadResultModel result = await ServicePool.fu.upload(imageBuffer);
-            await onGotScanResult(result.result, result.card);
+            try {
+              UploadResultModel result = await ServicePool.fu.upload(imageBuffer);
+              await onGotScanResult(result.result, result.card);
+            } catch (e) {
+              showScanResult('网络异常:$e');
+            }
           } catch (_) {}
         }
       }
@@ -289,12 +294,12 @@ class _ScanPageState extends State<ScanPage> {
         appBar: AppBar(
           title: const Text('扫一扫 迎福卡'),
           actions: [
-            // IconButton(
-            //     onPressed: () async {
-            //       // final image = await MockPool.fu.upload(Uint8List(0));
-            //       onGotScanResult(UploadResult.successful, FuCard.noCard);
-            //     },
-            //     icon: Icon(Icons.add)),
+            IconButton(
+                onPressed: () async {
+                  // final image = await MockPool.fu.upload(Uint8List(0));
+                  onGotScanResult(UploadResult.successful, FuCard.noCard);
+                },
+                icon: Icon(Icons.add)),
             TextButton(
               onPressed: () => launchInBrowser('https://support.qq.com/products/377648'),
               child: const Text('反馈', style: TextStyle(color: Colors.white)),

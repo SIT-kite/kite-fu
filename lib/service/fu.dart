@@ -42,7 +42,7 @@ class FuService extends AService implements FuDao {
 
   @override
   Future<void> share() async {
-    await session.post('https://sunnysab.cn/api/v2/badge/image');
+    await session.post('https://kite.sunnysab.cn/api/v2/badge/share');
     Log.info('成功记录一次分享操作');
   }
 }
