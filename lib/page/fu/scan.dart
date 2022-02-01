@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kite_fu/entity/fu.dart';
+import 'package:kite_fu/global/mock_pool.dart';
 import 'package:kite_fu/global/service_pool.dart';
 import 'package:kite_fu/page/fu/util.dart';
 import 'package:kite_fu/util/logger.dart';
@@ -24,7 +25,7 @@ class _ScanPageState extends State<ScanPage> {
   WebViewXController? webviewController;
 
   bool isCameraErrorState = false;
-
+  bool webViewHideState = false;
   Future<bool> isCameraInit() async {
     if (webviewController == null) {
       return false;
@@ -185,10 +186,17 @@ class _ScanPageState extends State<ScanPage> {
       // showScanResult(name);
       Log.info('收到了一张 ' + name);
 
+      setState(() {
+        webViewHideState = true;
+      });
+
       await showDialog(
         context: context,
         builder: card == FuCard.noCard ? showKitePrompt : (context) => showFuCard(context, card),
       );
+      setState(() {
+        webViewHideState = false;
+      });
     }
 
     switch (result) {
@@ -213,9 +221,6 @@ class _ScanPageState extends State<ScanPage> {
   }
 
   Future<void> loopOnce() async {
-    if (webviewController == null) {
-      return;
-    }
     if (await isCameraError()) {
       Log.info('相机错误');
       setState(() {
@@ -250,6 +255,9 @@ class _ScanPageState extends State<ScanPage> {
         Log.info('WebView页面加载完毕');
         // 开始进入拍照循环
         while (true) {
+          if (webviewController == null) {
+            break;
+          }
           await loopOnce();
         }
       },
@@ -263,6 +271,8 @@ class _ScanPageState extends State<ScanPage> {
     webviewController = null;
     super.dispose();
   }
+
+  Widget? webview;
 
   @override
   Widget build(BuildContext context) {
@@ -281,7 +291,7 @@ class _ScanPageState extends State<ScanPage> {
     }
 
     Widget buildNormalPage() {
-      return FutureBuilder<String>(
+      webview ??= FutureBuilder<String>(
         future: rootBundle.loadString('assets/scan/index.html'),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
@@ -295,26 +305,28 @@ class _ScanPageState extends State<ScanPage> {
           );
         },
       );
+      return webview!;
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('扫一扫 迎福卡'),
-          actions: [
-            IconButton(
-                onPressed: () async {
-                  final image = await MockPool.fu.upload(Uint8List(0));
-                  onGotScanResult(image.result, image.card);
-                  // loopOnce();
-                  // showLogoutDialog(context);
-                },
-                icon: const Icon(Icons.add)),
-            TextButton(
-              onPressed: () => launchInBrowser('https://support.qq.com/products/377648'),
-              child: const Text('反馈', style: TextStyle(color: Colors.white)),
-            ),
-          ],
-        ),
-        body: isCameraErrorState ? buildErrorPage() : buildNormalPage());
+      appBar: AppBar(
+        title: const Text('扫一扫 迎福卡'),
+        actions: [
+          IconButton(
+              onPressed: () async {
+                final image = await MockPool.fu.upload(Uint8List(0));
+                onGotScanResult(image.result, image.card);
+                // loopOnce();
+                // showLogoutDialog(context);
+              },
+              icon: const Icon(Icons.add)),
+          TextButton(
+            onPressed: () => launchInBrowser('https://support.qq.com/products/377648'),
+            child: const Text('反馈', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+      body: webViewHideState ? Container() : (isCameraErrorState ? buildErrorPage() : buildNormalPage()),
+    );
   }
 }
