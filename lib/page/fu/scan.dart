@@ -65,6 +65,7 @@ class _ScanPageState extends State<ScanPage> {
     /// 显示福卡
     Widget showFuCard(BuildContext context, FuCard card) {
       String name = cardTypeToString(card);
+      showScanResult('🎉🎉🎉恭喜收获了 $name 一张');
       return SimpleDialog(
         contentPadding: const EdgeInsets.all(0),
         children: [
@@ -78,7 +79,6 @@ class _ScanPageState extends State<ScanPage> {
                 child: SizedBox(
                   child: ElevatedButton(
                     onPressed: () async {
-                      showScanResult('🎉🎉🎉恭喜收获了 $name 一张');
                       Navigator.pop(context);
                     },
                     child: const Text('立即收下'),
