@@ -36,3 +36,4 @@ jobs:
           password: ${{ secrets.SERVER_SECRET }}
           source: "./build/web/*"
           target: "/var/kite/web/fu/"
+          strip_components: 2
