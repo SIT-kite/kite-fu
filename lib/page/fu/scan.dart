@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kite_fu/entity/fu.dart';
-import 'package:kite_fu/global/mock_pool.dart';
 import 'package:kite_fu/global/service_pool.dart';
 import 'package:kite_fu/page/fu/util.dart';
 import 'package:kite_fu/util/logger.dart';
@@ -114,6 +113,56 @@ class _ScanPageState extends State<ScanPage> {
     }
 
     Widget showKitePrompt(BuildContext context) {
+      Widget buildText() {
+        return Column(
+          children: [
+            const Text(
+              '你知道吗',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(0xFF, 252, 214, 177),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              margin: const EdgeInsets.only(left: 50, right: 50),
+              child: Text(
+                _getRandomPrompt(),
+                style: const TextStyle(
+                  fontSize: 18,
+                  // fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(0xFF, 252, 214, 177),
+                ),
+              ),
+            )
+          ],
+        );
+      }
+
+      Widget buildContentView() {
+        return Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/icon.png',
+                height: 100,
+              ),
+              const SizedBox(height: 100),
+              buildText(),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                },
+                child: const Text('我知道啦'),
+              ),
+            ],
+          ),
+        );
+      }
+
       showScanResult('很抱歉，未抽中福卡😭');
       return SimpleDialog(
         contentPadding: const EdgeInsets.all(0),
@@ -123,49 +172,7 @@ class _ScanPageState extends State<ScanPage> {
             fit: StackFit.loose,
             children: [
               Image.asset('assets/fu_card/noCard.jpg'),
-              Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/icon.png',
-                      height: 100,
-                    ),
-                    const SizedBox(height: 100),
-                    const Text(
-                      '你知道吗',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(0xFF, 252, 214, 177),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      margin: const EdgeInsets.only(left: 50, right: 50),
-                      child: Text(
-                        _getRandomPrompt(),
-                        style: const TextStyle(
-                          fontSize: 18,
-                          // fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(0xFF, 252, 214, 177),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: 30,
-                child: SizedBox(
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('我知道啦'),
-                  ),
-                ),
-              ),
+              buildContentView(),
             ],
           ),
         ],
@@ -192,7 +199,7 @@ class _ScanPageState extends State<ScanPage> {
         showScanResult('已达当日最大次数限制 😭\n公众号可再领取一次机会(限每天一次)');
         break;
       case UploadResult.successful:
-        await showFuCardResult();
+        showFuCardResult();
         break;
       case UploadResult.tooLate:
         showScanResult('来晚了，活动已过期 😱');
@@ -205,32 +212,29 @@ class _ScanPageState extends State<ScanPage> {
     }
   }
 
-  Future<void> loop() async {
-    Log.info('进入拍照循环');
-    while (true) {
-      if (webviewController == null) {
-        break;
-      }
-      if (await isCameraError()) {
-        Log.info('相机错误');
-        setState(() {
-          isCameraErrorState = true;
-        });
-      }
-      await Future.delayed(const Duration(seconds: 3));
-      if (await isCameraInit()) {
-        Log.info('相机初始化成功');
-        final imageBuffer = await takePhoto();
-        if (imageBuffer != null && imageBuffer.isNotEmpty) {
+  Future<void> loopOnce() async {
+    if (webviewController == null) {
+      return;
+    }
+    if (await isCameraError()) {
+      Log.info('相机错误');
+      setState(() {
+        isCameraErrorState = true;
+      });
+    }
+    await Future.delayed(const Duration(seconds: 3));
+    if (await isCameraInit()) {
+      Log.info('相机初始化成功');
+      final imageBuffer = await takePhoto();
+      if (imageBuffer != null && imageBuffer.isNotEmpty) {
+        try {
           try {
-            try {
-              UploadResultModel result = await ServicePool.fu.upload(imageBuffer);
-              await onGotScanResult(result.result, result.card);
-            } catch (e) {
-              showScanResult('网络异常:$e');
-            }
-          } catch (_) {}
-        }
+            UploadResultModel result = await ServicePool.fu.upload(imageBuffer);
+            await onGotScanResult(result.result, result.card);
+          } catch (e) {
+            showScanResult('网络异常:$e');
+          }
+        } catch (_) {}
       }
     }
   }
@@ -245,7 +249,9 @@ class _ScanPageState extends State<ScanPage> {
       onPageFinished: (String src) async {
         Log.info('WebView页面加载完毕');
         // 开始进入拍照循环
-        loop();
+        while (true) {
+          await loopOnce();
+        }
       },
     );
   }
@@ -299,6 +305,8 @@ class _ScanPageState extends State<ScanPage> {
                 onPressed: () async {
                   final image = await MockPool.fu.upload(Uint8List(0));
                   onGotScanResult(image.result, image.card);
+                  // loopOnce();
+                  // showLogoutDialog(context);
                 },
                 icon: const Icon(Icons.add)),
             TextButton(
