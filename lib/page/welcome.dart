@@ -6,13 +6,19 @@ import 'package:kite_fu/page/route_table.dart';
 
 const backgroundList = ["1.jpg", "2.png", "3.jpg", "4.jpg", "5.jpg"];
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
+
+  @override
+  State<WelcomePage> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  final bg = backgroundList[Random().nextInt(backgroundList.length)];
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final bg = backgroundList[Random().nextInt(backgroundList.length)];
 
     return Scaffold(
       body: Stack(
