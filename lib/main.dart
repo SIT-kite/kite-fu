@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:kite_fu/global/init_util.dart';
 import 'package:kite_fu/page/route_table.dart';
-import 'package:oktoast/oktoast.dart';
 
 const primaryColor = Colors.red;
 void main() async {
@@ -44,7 +44,7 @@ class KiteFuApp extends StatelessWidget {
       initialRoute: RouteTable.indexPath,
       onGenerateRoute: RouteTable.onGenerateRoute,
       debugShowCheckedModeBanner: false,
-      builder: (_, Widget? child) => OKToast(child: child!),
+      builder: EasyLoading.init(builder: (ctx, child) => child!),
     );
   }
 }

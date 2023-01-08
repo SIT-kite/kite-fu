@@ -4,12 +4,12 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:kite_fu/entity/fu.dart';
 import 'package:kite_fu/global/service_pool.dart';
 import 'package:kite_fu/page/fu/util.dart';
 import 'package:kite_fu/util/logger.dart';
 import 'package:kite_fu/util/url_launcher.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:webviewx/webviewx.dart';
 
 class ScanPage extends StatefulWidget {
@@ -51,13 +51,7 @@ class _ScanPageState extends State<ScanPage> {
   /// 显示toast
   showScanResult(String showText) {
     Log.info(showText);
-    return showToast(
-      showText,
-      position: ToastPosition.bottom,
-      context: context,
-      backgroundColor: Colors.black.withOpacity(0.8),
-      radius: 13.0,
-    );
+    EasyLoading.showToast(showText, toastPosition: EasyLoadingToastPosition.bottom);
   }
 
   /// 当获取到扫描结果时
