@@ -7,9 +7,9 @@ class SessionPool {
   static Dio _initDio() {
     Dio dio = Dio();
     // 设置默认超时时间
-    dio.options.connectTimeout = 3 * 1000;
-    dio.options.sendTimeout = 3 * 1000;
-    dio.options.receiveTimeout = 3 * 1000;
+    dio.options.connectTimeout = 10 * 1000;
+    dio.options.sendTimeout = 10 * 1000;
+    dio.options.receiveTimeout = 10 * 1000;
 
     return dio;
   }

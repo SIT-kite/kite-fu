@@ -1,11 +1,10 @@
 import 'package:url_launcher/url_launcher.dart';
 
+import 'logger.dart';
+
 Future<void> launchInBrowser(String url) async {
-  if (!await launch(
-    url,
-    forceSafariVC: false,
-    forceWebView: false,
-  )) {
-    throw 'Could not launch $url';
-  }
+  Log.info('启动浏览器打开页面：$url');
+  final uri = Uri.tryParse(url);
+  if (uri == null) throw UnsupportedError('Cannot load $url');
+  launchUrl(uri, mode: LaunchMode.externalApplication);
 }
