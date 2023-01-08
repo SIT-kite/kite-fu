@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:kite_fu/global/env.dart';
 import 'package:kite_fu/global/storage_pool.dart';
 import 'package:kite_fu/page/route_table.dart';
 
@@ -40,6 +41,10 @@ class _WelcomePageState extends State<WelcomePage> {
             child: GestureDetector(
                 child: Image.asset('assets/welcome/button.png', height: 50),
                 onTap: () {
+                  if (currentAppMode == AppMode.mock) {
+                    Navigator.of(context).pushReplacementNamed(RouteTable.fuPath);
+                    return;
+                  }
                   Navigator.of(context).pushReplacementNamed(
                     StoragePool.jwt.jwtToken == null ? RouteTable.loginPath : RouteTable.fuPath,
                   );

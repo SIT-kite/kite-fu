@@ -1,3 +1,4 @@
+import 'package:kite_fu/global/env.dart';
 import 'package:kite_fu/util/logger.dart';
 
 import 'service_pool.dart';
@@ -8,6 +9,7 @@ import 'storage_pool.dart';
 Future<void> initBeforeRun() async {
   // Future.wait可以使多个Future并发执行
   Log.info('开始应用开启前的初始化');
+  Log.debug('当前App运行模式：$currentAppMode');
   // 由于网络层需要依赖存储层的缓存
   // 所以必须先初始化存储层，在初始化网络层
   await StoragePool.init();

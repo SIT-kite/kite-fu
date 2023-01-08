@@ -1,7 +1,10 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:kite_fu/dao/account.dart';
 import 'package:kite_fu/dao/fu.dart';
+import 'package:kite_fu/dao/jwt.dart';
+import 'package:kite_fu/entity/account.dart';
 import 'package:kite_fu/entity/fu.dart';
 import 'package:kite_fu/util/logger.dart';
 
@@ -55,4 +58,16 @@ class FuMock implements FuDao {
 
   @override
   Future<void> share() async {}
+}
+
+class JwtStorageMock implements JwtDao {
+  @override
+  String? jwtToken = 'testjwtxxx';
+}
+
+class AccountMock implements AccountDao {
+  @override
+  KiteUser? account = KiteUser()
+    ..account = 'test123'
+    ..createTime = DateTime.now();
 }

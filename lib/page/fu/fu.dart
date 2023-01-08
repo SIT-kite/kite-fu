@@ -84,6 +84,13 @@ class FuPage extends StatefulWidget {
 class _FuPageState extends State<FuPage> {
   final currentUser = StoragePool.account.account;
   List<MyCard> myCards = [];
+
+  @override
+  void initState() {
+    super.initState();
+    Log.debug("FuPageState: initState");
+  }
+
   Future<void> gotoScanPage() async {
     await Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
       return const ScanPage();

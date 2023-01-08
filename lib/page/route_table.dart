@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kite_fu/global/env.dart';
 import 'package:kite_fu/global/storage_pool.dart';
 import 'package:kite_fu/util/logger.dart';
 
@@ -35,14 +36,17 @@ class RouteTable {
       return MaterialPageRoute(builder: table[notFoundPath]!);
     }
 
-    final bool hasAuth = StoragePool.jwt.jwtToken != null;
-    if (name == fuPath || name == loginPath) {
-      if (hasAuth) {
-        return MaterialPageRoute(builder: table[fuPath]!);
-      } else {
-        return MaterialPageRoute(builder: table[loginPath]!);
+    if (currentAppMode != AppMode.mock) {
+      final bool hasAuth = StoragePool.jwt.jwtToken != null;
+      if (name == fuPath || name == loginPath) {
+        if (hasAuth) {
+          return MaterialPageRoute(builder: table[fuPath]!);
+        } else {
+          return MaterialPageRoute(builder: table[loginPath]!);
+        }
       }
     }
+
     return MaterialPageRoute(builder: table[name]!);
   }
 }
