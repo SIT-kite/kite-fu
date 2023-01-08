@@ -7,35 +7,44 @@ const primaryColor = Colors.red;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initBeforeRun();
-
-  final themeData = ThemeData(primaryColor: primaryColor, primarySwatch: createThemeSwatch(primaryColor));
-  final app = MaterialApp(
-    title: '2022 新春迎福',
-    theme: themeData,
-    initialRoute: RouteTable.indexPath,
-    onGenerateRoute: RouteTable.onGenerateRoute,
-    debugShowCheckedModeBanner: false,
-    builder: (_, Widget? child) => OKToast(child: child!),
-  );
-  runApp(app);
+  runApp(const KiteFuApp());
 }
 
-MaterialColor createThemeSwatch(Color color) {
-  List strengths = <double>[.05];
-  Map<int, Color> swatch = {};
-  final int r = color.red, g = color.green, b = color.blue;
+class KiteFuApp extends StatelessWidget {
+  const KiteFuApp({Key? key}) : super(key: key);
 
-  for (int i = 1; i < 10; i++) {
-    strengths.add(0.1 * i);
+  MaterialColor createThemeSwatch(Color color) {
+    List strengths = <double>[.05];
+    Map<int, Color> swatch = {};
+    final int r = color.red, g = color.green, b = color.blue;
+
+    for (int i = 1; i < 10; i++) {
+      strengths.add(0.1 * i);
+    }
+    for (var strength in strengths) {
+      final double ds = 0.5 - strength;
+      swatch[(strength * 1000).round()] = Color.fromRGBO(
+        r + ((ds < 0 ? r : (255 - r)) * ds).round(),
+        g + ((ds < 0 ? g : (255 - g)) * ds).round(),
+        b + ((ds < 0 ? b : (255 - b)) * ds).round(),
+        1,
+      );
+    }
+    return MaterialColor(color.value, swatch);
   }
-  for (var strength in strengths) {
-    final double ds = 0.5 - strength;
-    swatch[(strength * 1000).round()] = Color.fromRGBO(
-      r + ((ds < 0 ? r : (255 - r)) * ds).round(),
-      g + ((ds < 0 ? g : (255 - g)) * ds).round(),
-      b + ((ds < 0 ? b : (255 - b)) * ds).round(),
-      1,
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: '2022 新春迎福',
+      theme: ThemeData(
+        primaryColor: primaryColor,
+        primarySwatch: createThemeSwatch(primaryColor),
+      ),
+      initialRoute: RouteTable.indexPath,
+      onGenerateRoute: RouteTable.onGenerateRoute,
+      debugShowCheckedModeBanner: false,
+      builder: (_, Widget? child) => OKToast(child: child!),
     );
   }
-  return MaterialColor(color.value, swatch);
 }
