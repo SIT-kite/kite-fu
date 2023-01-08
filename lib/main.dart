@@ -36,7 +36,7 @@ class KiteFuApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '2022 新春迎福',
+      title: '2023 新春迎福',
       theme: ThemeData(
         primaryColor: primaryColor,
         primarySwatch: createThemeSwatch(primaryColor),
