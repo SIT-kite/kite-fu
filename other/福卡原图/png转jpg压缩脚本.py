@@ -5,7 +5,7 @@ def convert(filename: str):
 
     h,w,_ = img.shape
     print(w,h)
-    img = cv2.resize(img,(int(w/10),int(h/10)))
+    img = cv2.resize(img,(int(w),int(h)))
 
     cv2.imwrite(filename.split('.')[0]+'.jpg',img)
 
