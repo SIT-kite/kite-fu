@@ -13,7 +13,11 @@ import 'package:kite_fu/util/url_launcher.dart';
 import 'package:webviewx/webviewx.dart';
 
 class ScanPage extends StatefulWidget {
-  const ScanPage({Key? key}) : super(key: key);
+  final String userMode;
+  const ScanPage({
+    Key? key,
+    this.userMode = 'USER',
+  }) : super(key: key);
 
   @override
   State<ScanPage> createState() => _ScanPageState();
@@ -283,14 +287,15 @@ class _ScanPageState extends State<ScanPage> {
       );
     }
 
-    Widget buildNormalPage() {
+    Widget buildNormalPage(String mode) {
       webview ??= FutureBuilder<String>(
         future: rootBundle.loadString('assets/scan/index.html'),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
               String data = snapshot.data!;
-              return buildCameraView(data);
+              Log.info('成功构造相机：$mode');
+              return buildCameraView(data.replaceAll('{{ CAMERA_MODE }}', mode));
             }
           }
           return const Center(
@@ -305,19 +310,29 @@ class _ScanPageState extends State<ScanPage> {
       appBar: AppBar(
         title: const Text('扫一扫 迎福卡'),
         actions: [
-          // IconButton(
-          //     onPressed: () async {
-          //       final image = await MockPool.fu.upload(Uint8List(0));
-          //       onGotScanResult(image.result, image.card);
-          //     },
-          //     icon: const Icon(Icons.add)),
+          TextButton(
+            onPressed: () {
+              if (widget.userMode == 'USER') {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                  return const ScanPage(userMode: 'ENVIRONMENT');
+                }));
+              } else {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                  return const ScanPage(userMode: 'USER');
+                }));
+              }
+            },
+            child: const Text('切换相机', style: TextStyle(color: Colors.white)),
+          ),
           TextButton(
             onPressed: () => launchInBrowser('https://support.qq.com/products/377648'),
             child: const Text('反馈', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
-      body: webViewHideState ? Container() : (isCameraErrorState ? buildErrorPage() : buildNormalPage()),
+      body: webViewHideState ? Container() : (isCameraErrorState ? buildErrorPage() : buildNormalPage(widget.userMode)),
     );
   }
 }

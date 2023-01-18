@@ -35,7 +35,7 @@ const video = document.querySelector("video");
 const cameraPhoto = new libCam.default(video);
 
 // constants
-const camera_FacingMode = libCam.FACING_MODES.ENVIRONMENT;
+const camera_FacingMode = libCam.FACING_MODES.{{ CAMERA_MODE }};
 const dataUri_Config = {
 	sizeFactor: 1,                     // 图像缩放，1 原图，按比例缩放
 	imageType: libCam.IMAGE_TYPES.JPG, // 图像类型

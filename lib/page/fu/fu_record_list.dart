@@ -17,26 +17,28 @@ class FuRecordListPage extends StatelessWidget {
   Widget buildList() {
     return ListView.separated(
       itemBuilder: (context, i) {
+        String enName = recordList[i].card.name;
         String name = cardTypeToString(recordList[i].card);
         return ListTile(
           minVerticalPadding: 20,
           leading: Image.asset('assets/fu/$name.png'),
           title: Text(name),
-          subtitle: Text('获得时间: ' + recordList[i].ts.toString().split('.')[0]),
+          subtitle: Text('获得时间: ${recordList[i].ts.toString().split('.')[0]}'),
           onTap: () {
             showDialog(
-              context: context,
-              builder: (context) {
-                return SimpleDialog(
-                  contentPadding: const EdgeInsets.all(0),
-                  children: [Image.asset('assets/fu_card/$name.jpg')],
-                );
-              });
+                context: context,
+                builder: (context) {
+                  return SimpleDialog(
+                    contentPadding: const EdgeInsets.all(0),
+                    children: [Image.asset('assets/fu_card/$enName.jpg')],
+                  );
+                });
           },
         );
       },
-      separatorBuilder: (context, index) => const ColoredBox(color: Colors.grey, child: SizedBox(height: 1)),
-      itemCount: recordList.length);
+      separatorBuilder: (context, index) => const Divider(),
+      itemCount: recordList.length,
+    );
   }
 
   @override
