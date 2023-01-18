@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:kite_fu/backend.dart';
 import 'package:kite_fu/dao/jwt.dart';
 import 'package:kite_fu/entity/account.dart';
 import 'package:kite_fu/session/abstract_session.dart';
@@ -33,7 +34,7 @@ class KiteSession extends ASession {
         method: method,
         contentType: contentType ?? ContentType.json.value,
         responseType: responseType ?? ResponseType.json,
-        headers: token == null ? null : {'Authorization': 'Bearer ' + token},
+        headers: token == null ? null : {'Authorization': 'Bearer $token'},
       ),
     );
     try {
@@ -64,12 +65,13 @@ class KiteSession extends ASession {
   /// 用户登录
   /// 用户不存在时，将自动创建用户
   Future<KiteUser> login(String username, String password) async {
-    final response = await post('https://kite.sunnysab.cn/api/v2/session', data: {
+    final response = await post(backendLogin, data: {
       'account': username,
       'password': password,
     });
     jwtDao.jwtToken = response.data['token'];
     profile = KiteUser.fromJson(response.data['profile']);
+    Log.info(profile);
     return profile!;
   }
 }

@@ -67,7 +67,5 @@ class JwtStorageMock implements JwtDao {
 
 class AccountMock implements AccountDao {
   @override
-  KiteUser? account = KiteUser()
-    ..account = 'test123'
-    ..createTime = DateTime.now();
+  KiteUser? account = KiteUser()..account = 'test123';
 }

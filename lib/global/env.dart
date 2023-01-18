@@ -4,4 +4,4 @@ enum AppMode {
   release,
 }
 
-const currentAppMode = AppMode.mock;
+const currentAppMode = AppMode.debug;
