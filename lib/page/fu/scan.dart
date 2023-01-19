@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
@@ -210,30 +211,34 @@ class _ScanPageState extends State<ScanPage> {
     }
   }
 
+  bool isSubmitting = false;
   Future<void> loopOnce() async {
-    if (await isCameraError()) {
-      Log.info('相机错误');
-      setState(() {
-        isCameraErrorState = true;
-      });
-    }
-    await Future.delayed(const Duration(seconds: 3));
-    if (await isCameraInit()) {
-      Log.info('相机初始化成功');
-      final imageBuffer = await takePhoto();
-      if (imageBuffer != null && imageBuffer.isNotEmpty) {
-        try {
+    isSubmitting = true;
+    try {
+      if (await isCameraError()) {
+        Log.info('相机错误');
+        setState(() {
+          isCameraErrorState = true;
+        });
+      }
+      if (await isCameraInit()) {
+        Log.info('相机初始化成功');
+        final imageBuffer = await takePhoto();
+        if (imageBuffer != null && imageBuffer.isNotEmpty) {
           try {
             UploadResultModel result = await ServicePool.fu.upload(imageBuffer);
             await onGotScanResult(result.result, result.card);
           } catch (e) {
             showScanResult('网络异常:$e');
           }
-        } catch (_) {}
+        }
       }
+    } finally {
+      isSubmitting = false;
     }
   }
 
+  Timer? _timer;
   Widget buildCameraView(String htmlSource) {
     return WebViewX(
       initialContent: htmlSource,
@@ -244,12 +249,11 @@ class _ScanPageState extends State<ScanPage> {
       onPageFinished: (String src) async {
         Log.info('WebView页面加载完毕');
         // 开始进入拍照循环
-        while (true) {
-          if (webviewController == null) {
-            break;
-          }
-          await loopOnce();
-        }
+        _timer ??= Timer.periodic(const Duration(seconds: 3), (timer) {
+          // 正在提交中，不再上传图片
+          if (isSubmitting) return;
+          loopOnce();
+        });
       },
     );
   }
@@ -259,6 +263,7 @@ class _ScanPageState extends State<ScanPage> {
     Log.info('相机已销毁');
     webviewController?.dispose();
     webviewController = null;
+    _timer?.cancel();
     super.dispose();
   }
 
