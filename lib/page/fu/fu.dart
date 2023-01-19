@@ -47,13 +47,13 @@ class Fu {
     );
 
     return Container(
-      child: card,
       margin: const EdgeInsets.all(5),
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         color: Colors.red.withAlpha(200),
         borderRadius: BorderRadius.circular(10),
       ),
+      child: card,
     );
   }
 

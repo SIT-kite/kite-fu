@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:kite_fu/backend.dart';
 import 'package:kite_fu/global/session_pool.dart';
 import 'package:kite_fu/global/storage_pool.dart';
 import 'package:kite_fu/util/flash.dart';
@@ -28,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
   bool isLicenseAccepted = false;
   bool isProxySettingShown = false;
   bool disableLoginButton = false;
-  bool showPs = false;
 
   void gotoFuMainPage() {
     // 跳转页面并移除所有其他页面
@@ -60,6 +60,7 @@ class _LoginPageState extends State<LoginPage> {
 
       Log.info(user);
 
+      if (!mounted) return;
       showBasicFlash(context, const Text('登录成功'));
       StoragePool.account.account = user;
       gotoFuMainPage();
@@ -68,13 +69,12 @@ class _LoginPageState extends State<LoginPage> {
       showBasicFlash(context, Text('登录异常: ${e.toString().split('\n')[0]}'));
       setState(() {
         disableLoginButton = false;
-        showPs = true;
       });
     }
   }
 
   static void onOpenUserLicense() {
-    const url = "https://cdn.kite.sunnysab.cn/license/";
+    const url = backendLicense;
     launchInBrowser(url);
   }
 
@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                   });
                 },
               ),
-              labelText: 'OA密码或身份证号倒数第7到2位',
+              labelText: '身份证号倒数第7到2位',
               hintText: '输入你的校验信息',
               icon: const Icon(Icons.lock),
             ),
@@ -126,8 +126,8 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         Checkbox(
           value: isLicenseAccepted,
-          onChanged: (_isLicenseAccepted) {
-            setState(() => isLicenseAccepted = _isLicenseAccepted!);
+          onChanged: (e) {
+            setState(() => isLicenseAccepted = e!);
           },
         ),
         Text.rich(
@@ -190,10 +190,6 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 25),
                   // Login button.
                   buildLoginButton(),
-                  const SizedBox(height: 10),
-                  showPs
-                      ? const Text('PS: 放假期间，学校信息化技术中心会将学校服务器关闭，导致无法使用OA密码登录。届时请使用报到时的身份证号倒数第7到2位登录。')
-                      : Container(),
                 ],
               ),
             ),

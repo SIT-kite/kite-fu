@@ -16,7 +16,7 @@ class ScanPage extends StatefulWidget {
   final String userMode;
   const ScanPage({
     Key? key,
-    this.userMode = 'USER',
+    this.userMode = 'ENVIRONMENT',
   }) : super(key: key);
 
   @override
