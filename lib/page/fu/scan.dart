@@ -92,19 +92,12 @@ class _ScanPageState extends State<ScanPage> {
     /// 获取随机语言，用于无福卡时弹出
     String _getRandomPrompt() {
       const newFeatures = [
-        '支持直接评教了',
-        '关于您数据都存储在您的手机中',
-        '首页下拉刷新可以更新所有信息',
-        '可通过桌面图标直接进入每日上报页面',
-        '还内置了几款小游戏哦~',
-        '支持在网页上反馈了呢',
-        // '开学前将与大家见面',
-        '里长按课程即可选择并计算绩点',
-        '在我手，告别上应大App',
-        '可以方便地查阅书籍',
-        '支持交易二手书啦！',
-        '可以查看消费统计了！',
-        '点击首页上的 logo 有更多功能'
+        '新的一年，祝你：钱兔无忧，钱兔似锦，兔然暴富，大展宏兔，好事成兔。',
+        '福起新岁，万事顺遂。有趣、有盼、无灾、无难。',
+        '兔个吉利、兔然暴富，兔年吉祥、钱兔无量、大展宏兔、开启好运兔年。',
+        '平安喜乐，万事胜意。',
+        '2023，新的开始祝大家钱兔无忧、钱兔似锦、兔然暴富、大展宏兔、好事成兔。~',
+        '新的一年，祝大家开心学习和工作，快乐生活，所遇皆温柔，努力皆有果。',
       ];
 
       return '小风筝App' + newFeatures[Random().nextInt(newFeatures.length)];
@@ -115,7 +108,7 @@ class _ScanPageState extends State<ScanPage> {
         return Column(
           children: [
             const Text(
-              '你知道吗',
+              '新春快乐',
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
