@@ -168,7 +168,7 @@ class _FuPageState extends State<FuPage> {
           TextButton(
             onPressed: () async {
               await ServicePool.fu.share();
-              launchInBrowser('https://mp.weixin.qq.com/s/G7_WZlEO15tjFJoQoaqloQ');
+              launchInBrowser('https://mp.weixin.qq.com/s/jQLFmdG35WEGaDhkYJhEVg');
             },
             child: const Text(
               '打开活动公众号页面',
